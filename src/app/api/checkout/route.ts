@@ -47,15 +47,26 @@ export async function POST(req: Request) {
   const promoCode = rawPromo.trim().slice(0, 64);
 
   try {
-    let discounts: Array<{ promotion_code: string }> | undefined;
+    let discounts: Array<{ promotion_code?: string; coupon?: string }> | undefined;
     const allowPromoCodesInStripe = envAllowPromotionCodes() && !promoCode;
     if (promoCode) {
       const pcs = await stripe.promotionCodes.list({ code: promoCode, active: true, limit: 1 });
       const pc = pcs.data[0];
-      if (!pc) {
-        return NextResponse.json({ error: "Rabattcode ist ungültig oder abgelaufen." }, { status: 400 });
+      if (pc) {
+        discounts = [{ promotion_code: pc.id }];
+      } else {
+        // Fallback: Coupon-ID (z. B. "RS30") direkt akzeptieren, wenn vorhanden & gültig.
+        try {
+          const coupon = await stripe.coupons.retrieve(promoCode);
+          const valid = Boolean(coupon.valid) && !coupon.deleted;
+          if (!valid) {
+            return NextResponse.json({ error: "Rabattcode ist ungültig oder abgelaufen." }, { status: 400 });
+          }
+          discounts = [{ coupon: coupon.id }];
+        } catch {
+          return NextResponse.json({ error: "Rabattcode ist ungültig oder abgelaufen." }, { status: 400 });
+        }
       }
-      discounts = [{ promotion_code: pc.id }];
     }
 
     const session = await stripe.checkout.sessions.create({
