@@ -30,7 +30,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Ungültige Anfrage." }, { status: 400 });
   }
 
-  const payload = body as { lines?: unknown };
+  const payload = body as { lines?: unknown; promoCode?: unknown };
   const validated = validateCartForPayment(payload.lines);
   if (!validated.ok) {
     return NextResponse.json({ error: validated.error }, { status: 400 });
@@ -43,11 +43,25 @@ export async function POST(req: Request) {
   }
 
   const origin = siteOrigin();
+  const rawPromo = typeof payload.promoCode === "string" ? payload.promoCode : "";
+  const promoCode = rawPromo.trim().slice(0, 64);
 
   try {
+    let discounts: Array<{ promotion_code: string }> | undefined;
+    const allowPromoCodesInStripe = envAllowPromotionCodes() && !promoCode;
+    if (promoCode) {
+      const pcs = await stripe.promotionCodes.list({ code: promoCode, active: true, limit: 1 });
+      const pc = pcs.data[0];
+      if (!pc) {
+        return NextResponse.json({ error: "Rabattcode ist ungültig oder abgelaufen." }, { status: 400 });
+      }
+      discounts = [{ promotion_code: pc.id }];
+    }
+
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
-      allow_promotion_codes: envAllowPromotionCodes(),
+      allow_promotion_codes: allowPromoCodesInStripe,
+      ...(discounts ? { discounts } : {}),
       line_items: lines.map((l) => ({
         quantity: l.qty,
         price_data: {
@@ -70,6 +84,7 @@ export async function POST(req: Request) {
           lines.map((l) => `${l.sku}×${l.qty}`).join(","),
           450,
         ),
+        ...(promoCode ? { promo_code: truncate(promoCode, 64) } : {}),
       },
       billing_address_collection: "required",
       phone_number_collection: { enabled: true },

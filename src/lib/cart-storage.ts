@@ -4,6 +4,7 @@ import { formatReferenceEur } from "@/lib/reference-price";
 import { effectiveReferencePerVialForSku } from "@/lib/volume-price-tiers";
 
 export const CART_STORAGE_KEY = "bp-shop-cart-v1";
+const PROMO_CODE_KEY = "bp-shop-promo-code-v1";
 
 const CART_EVENT = "bp-cart-change";
 
@@ -72,6 +73,26 @@ function persist(lines: CartLine[]) {
 
 export function writeCartLines(lines: CartLine[]) {
   persist(lines);
+}
+
+export function readPromoCode(): string {
+  if (typeof window === "undefined") return "";
+  try {
+    return String(window.localStorage.getItem(PROMO_CODE_KEY) ?? "").trim();
+  } catch {
+    return "";
+  }
+}
+
+export function writePromoCode(code: string) {
+  if (typeof window === "undefined") return;
+  const trimmed = code.trim().slice(0, 64);
+  try {
+    if (!trimmed) window.localStorage.removeItem(PROMO_CODE_KEY);
+    else window.localStorage.setItem(PROMO_CODE_KEY, trimmed);
+  } finally {
+    emitCartChange();
+  }
 }
 
 export function addToCart(line: Omit<CartLine, "qty"> & { qty?: number }) {

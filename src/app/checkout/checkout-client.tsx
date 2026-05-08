@@ -8,6 +8,7 @@ import {
   formatCartForInquiry,
   removeCartLine,
   setCartLineQty,
+  writePromoCode,
 } from "@/lib/cart-storage";
 import type { CartLine } from "@/lib/cart-storage";
 import { getHomeBestsellers } from "@/lib/bestseller-config";
@@ -125,11 +126,13 @@ function CartLineRow({ line }: { line: CartLine }) {
 }
 
 export function CheckoutClient() {
-  const { lines, count } = useCartSnapshot();
+  const { lines, count, promoCode } = useCartSnapshot();
   const subtotal = useMemo(() => cartReferenceSubtotal(lines), [lines]);
   const inquiryPreview = useMemo(() => formatCartForInquiry(lines), [lines]);
   const [payBusy, setPayBusy] = useState(false);
   const [payError, setPayError] = useState<string | null>(null);
+  const [promoDraft, setPromoDraft] = useState("");
+  const [promoTouched, setPromoTouched] = useState(false);
 
   const startStripeCheckout = useCallback(async () => {
     setPayBusy(true);
@@ -138,7 +141,7 @@ export function CheckoutClient() {
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ lines }),
+        body: JSON.stringify({ lines, promoCode }),
       });
       const data = (await res.json().catch(() => ({}))) as { url?: string; error?: string };
       if (!res.ok) {
@@ -152,7 +155,7 @@ export function CheckoutClient() {
       setPayError(e instanceof Error ? e.message : "Zahlung konnte nicht gestartet werden.");
       setPayBusy(false);
     }
-  }, [lines]);
+  }, [lines, promoCode]);
 
   if (lines.length === 0) {
     return (
@@ -208,6 +211,54 @@ export function CheckoutClient() {
               </p>
             </div>
             <div className="flex w-full flex-col gap-2 sm:w-auto sm:min-w-[220px]">
+              <div className="rounded-xl border border-black/[0.08] bg-white px-3 py-2">
+                <label className="block text-[11px] font-semibold uppercase tracking-[0.12em] text-muted">
+                  Rabattcode
+                </label>
+                <div className="mt-2 flex items-center gap-2">
+                  <input
+                    value={promoTouched ? promoDraft : promoCode}
+                    onChange={(e) => {
+                      setPromoTouched(true);
+                      setPromoDraft(e.target.value);
+                    }}
+                    placeholder="Code eingeben"
+                    className="h-10 w-full rounded-lg border border-black/[0.12] bg-white px-3 text-[14px] text-foreground outline-none ring-tint placeholder:text-muted focus:ring-2"
+                    autoCapitalize="characters"
+                    spellCheck={false}
+                  />
+                  <button
+                    type="button"
+                    className="inline-flex h-10 shrink-0 items-center justify-center rounded-lg bg-black/[0.06] px-3 text-[13px] font-medium text-foreground transition hover:bg-black/[0.09]"
+                    onClick={() => {
+                      const v = (promoTouched ? promoDraft : promoCode).trim();
+                      writePromoCode(v);
+                      setPromoDraft(v);
+                      setPromoTouched(true);
+                    }}
+                  >
+                    Anwenden
+                  </button>
+                </div>
+                {promoCode ? (
+                  <p className="mt-2 text-[12px] text-muted">
+                    Aktiv: <span className="font-mono font-semibold text-foreground">{promoCode}</span>
+                    <button
+                      type="button"
+                      className="ml-2 rounded-md px-2 py-1 text-[12px] font-medium text-tint hover:underline"
+                      onClick={() => {
+                        writePromoCode("");
+                        setPromoDraft("");
+                        setPromoTouched(false);
+                      }}
+                    >
+                      Entfernen
+                    </button>
+                  </p>
+                ) : (
+                  <p className="mt-2 text-[12px] text-muted">Wird im Stripe-Checkout automatisch angewendet.</p>
+                )}
+              </div>
               <button
                 type="button"
                 disabled={payBusy}
