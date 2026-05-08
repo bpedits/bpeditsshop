@@ -3,6 +3,12 @@ import { cartTotalEur, validateCartForPayment } from "@/lib/checkout-validate";
 import { getStripe } from "@/lib/stripe-server";
 import { siteOrigin } from "@/lib/site-origin";
 
+function envAllowPromotionCodes(): boolean {
+  const raw = process.env.STRIPE_ALLOW_PROMOTION_CODES?.trim().toLowerCase();
+  if (!raw) return true;
+  return raw === "1" || raw === "true" || raw === "yes" || raw === "on";
+}
+
 function truncate(s: string, max: number): string {
   if (s.length <= max) return s;
   return `${s.slice(0, max - 1)}…`;
@@ -41,6 +47,7 @@ export async function POST(req: Request) {
   try {
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
+      allow_promotion_codes: envAllowPromotionCodes(),
       line_items: lines.map((l) => ({
         quantity: l.qty,
         price_data: {
