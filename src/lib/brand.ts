@@ -8,10 +8,10 @@ export const brand = {
   /** Für Kurzzeilen / gleich lautende Formulierung in Fließtexten */
   legalFormDisplay: "Einzelunternehmen",
   /** Kanonische Domain (Kleinbuchstaben) */
-  domain: "bavaria-peptides.com",
+  domain: "www.bavaria-peptides.com",
   /** Für Anzeige in Fließtext */
   domainDisplay: "Bavaria-Peptides.com",
-  origin: "https://bavaria-peptides.com",
+  origin: "https://www.bavaria-peptides.com",
   /** Öffentliche Kontakt-E-Mail (Impressum, Datenschutz, Antworten, strukturierte Daten) */
   email: "info@bavaria-peptides.com",
   /** Nur Eingang Kontaktformular (/api/contact) — nicht zwangsläufig im Impressum */
