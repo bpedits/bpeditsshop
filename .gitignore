@@ -1,0 +1,17 @@
+# Dependencies
+node_modules/
+
+# Next.js
+.next/
+out/
+
+# Env (Secrets niemals committen)
+.env
+.env*.local
+
+# OS / IDE
+.DS_Store
+*.log
+
+# Lokale/versehentliche Unter-Repos oder Exporte
+bpeditaahop/

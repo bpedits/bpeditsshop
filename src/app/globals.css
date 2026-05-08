@@ -1,0 +1,194 @@
+@import "tailwindcss";
+
+@theme {
+  --color-foreground: #0a0a0c;
+  --color-muted: #636366;
+  --color-tint: #0066cc;
+  --color-surface: #ffffff;
+  --color-surface-pearl: #f2f2f7;
+  --color-fill-secondary: #e8e8ed;
+  --color-fill-secondary-pressed: #dcdce3;
+  --color-canvas-parchment: #fbfbfa;
+  --color-hairline: rgb(0 0 0 / 0.08);
+  --color-primary-focus: #0066cc;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-canvas-parchment text-foreground antialiased;
+  }
+}
+
+/* Horizontale Seitenränder + Safe Area (iPhone) */
+.page-gutter-x {
+  padding-left: max(1rem, env(safe-area-inset-left));
+  padding-right: max(1rem, env(safe-area-inset-right));
+}
+
+@media (min-width: 640px) {
+  .page-gutter-x {
+    padding-left: max(1.5rem, env(safe-area-inset-left));
+    padding-right: max(1.5rem, env(safe-area-inset-right));
+  }
+}
+
+@media (min-width: 1024px) {
+  .page-gutter-x {
+    padding-left: max(2rem, env(safe-area-inset-left));
+    padding-right: max(2rem, env(safe-area-inset-right));
+  }
+}
+
+@keyframes bp-fade-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/** PDP: Mengenzahl — leichter „Pop“, motion-reduce respektiert über motion-safe am Element */
+@keyframes bp-qty-pop {
+  0% {
+    opacity: 0.65;
+    transform: scale(0.92) translate3d(0, 4px, 0);
+  }
+  55% {
+    opacity: 1;
+    transform: scale(1.04) translate3d(0, 0, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translate3d(0, 0, 0);
+  }
+}
+
+/** PDP: Referenzpreis / Summe — kurzer Fade + minimaler Versatz */
+@keyframes bp-price-tick {
+  0% {
+    opacity: 0.5;
+    transform: translate3d(0, 5px, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/** Staffel: neue günstigere Referenzstufe erreicht — dezentes „Erfüllt“ (Tint + leichter Pop) */
+@keyframes bp-tier-fulfilled {
+  0% {
+    color: var(--color-foreground);
+    transform: scale(1) translate3d(0, 0, 0);
+    filter: brightness(1);
+  }
+  22% {
+    color: var(--color-tint);
+    transform: scale(1.08) translate3d(0, -1px, 0);
+    filter: brightness(1.12);
+  }
+  45% {
+    color: var(--color-tint);
+    transform: scale(1.04) translate3d(0, 0, 0);
+    filter: brightness(1.06);
+  }
+  100% {
+    color: var(--color-foreground);
+    transform: scale(1) translate3d(0, 0, 0);
+    filter: brightness(1);
+  }
+}
+
+/** Warenkorb: CTA nach Klick — kurzer „Press & Spring“ */
+@keyframes bp-cart-added {
+  0% {
+    transform: scale(1);
+  }
+  28% {
+    transform: scale(0.94);
+  }
+  58% {
+    transform: scale(1.04);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/** Warenkorb: einmaliger Ring-Puls auf dem Button */
+@keyframes bp-cart-ring-out {
+  0% {
+    box-shadow: 0 0 0 0 rgb(0 102 204 / 0.42);
+    opacity: 1;
+  }
+  100% {
+    box-shadow: 0 0 0 16px transparent;
+    opacity: 0;
+  }
+}
+
+/** Header: Badge springt bei neuer Position / höherer Stückzahl */
+@keyframes bp-cart-badge-bounce {
+  0% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(1.22);
+  }
+  70% {
+    transform: scale(0.94);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/** Formular: Erfolgs-Badge */
+@keyframes bp-success-scale-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.72);
+  }
+  70% {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes bp-success-check {
+  0% {
+    opacity: 0;
+    transform: scale(0.65) rotate(-14deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@keyframes bp-success-pulse {
+  0% {
+    transform: scale(0.85);
+    opacity: 0.6;
+  }
+  55% {
+    opacity: 0.2;
+    transform: scale(1.35);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.5);
+  }
+}
+
