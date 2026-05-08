@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { brand } from "@/lib/brand";
+import { SuccessRedirect } from "./success-redirect";
 
 export const metadata: Metadata = {
   title: "Zahlung bestätigt",
@@ -16,6 +17,7 @@ export default async function CheckoutErfolgPage({ searchParams }: Props) {
 
   return (
     <div className="mx-auto max-w-lg page-gutter-x py-12 sm:py-16 md:py-20">
+      <SuccessRedirect to="/" afterMs={2500} />
       <p className="text-[12px] font-semibold uppercase tracking-[0.12em] text-tint">Checkout</p>
       <h1 className="mt-2 text-[24px] font-semibold tracking-tight text-foreground sm:text-[28px]">
         Zahlung eingeleitet
@@ -31,10 +33,10 @@ export default async function CheckoutErfolgPage({ searchParams }: Props) {
       ) : null}
       <div className="mt-10 flex flex-col gap-3 sm:flex-row">
         <Link
-          href="/shop"
+          href="/"
           className="inline-flex min-h-11 touch-manipulation items-center justify-center rounded-full bg-tint px-6 text-[14px] font-semibold text-white transition hover:opacity-92"
         >
-          Weiter einkaufen
+          Zur Startseite
         </Link>
         <Link
           href="/anfrage"
