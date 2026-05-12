@@ -13,8 +13,6 @@ export type ProductVariant = {
   pack: string;
   /** Referenz-EUR pro Vial (Preisliste, ohne Umrechnung) */
   listPriceEur: number;
-  /** Interne Katalognummer (eindeutig pro Artikelzeile / SKU) */
-  catalogNo: string;
   /** Optional: eigene Staffel; sonst Standard-Forschungsstaffel aus `volume-price-tiers`. */
   volumeTiers?: VolumePriceTier[];
 };
@@ -22,7 +20,7 @@ export type ProductVariant = {
 export type Product = {
   id: string;
   slug: string;
-  /** Katalognummer der Produktfamilie (eine Nummer pro PDP / Produktgruppe) */
+  /** Eine Katalognummer pro Produkt (alle Varianten z. B. 5 mg / 10 mg teilen dieselbe Nummer). */
   catalogNo: string;
   /** Standard-SKU (erste Variante nach Sortierung) — für Meta, Kurztext */
   sku: string;

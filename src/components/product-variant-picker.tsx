@@ -62,7 +62,7 @@ export function ProductVariantPicker({ product }: Props) {
         <div className="rounded-2xl border border-black/[0.06] bg-gradient-to-b from-white to-surface-pearl/80 px-5 py-6 shadow-[0_8px_30px_-12px_rgba(0,0,0,0.08)] ring-1 ring-black/[0.04] sm:px-6 sm:py-6">
           <p className="text-[12px] font-semibold uppercase tracking-[0.12em] text-muted">Einzelvariante</p>
           <p className="mt-2 text-[16px] leading-snug text-muted sm:text-[17px]">{displayPackForShop(v.pack)}</p>
-          <p className="mt-1 font-mono text-[13px] text-muted">Artikel-Nr. {v.catalogNo}</p>
+          <p className="mt-1 font-mono text-[13px] text-muted">Kat.-Nr. {product.catalogNo}</p>
           <p className="mt-2.5 font-mono text-[15px] font-medium text-foreground sm:text-[16px]">SKU: {v.sku}</p>
           <AnimatedReferencePrice className="mt-4" perVialEur={eff} qty={qty} />
           <div className="mt-5 border-t border-black/[0.06] pt-5">
@@ -161,8 +161,8 @@ export function ProductVariantPicker({ product }: Props) {
 
       <div className="rounded-2xl border border-black/[0.06] bg-white px-4 py-5 shadow-[0_4px_24px_-12px_rgba(0,0,0,0.08)] sm:px-6 sm:py-6">
         <p className="text-[12px] font-semibold uppercase tracking-[0.12em] text-muted">Auswahl · Packung</p>
+        <p className="mt-1 font-mono text-[13px] text-muted">Kat.-Nr. {product.catalogNo}</p>
         <p className="mt-2 font-mono text-[15px] font-medium text-foreground sm:text-[16px]">SKU: {selected.sku}</p>
-        <p className="mt-1 font-mono text-[13px] text-muted">Artikel-Nr. {selected.catalogNo}</p>
         <p className="mt-2.5 text-[17px] leading-relaxed text-muted sm:text-[18px]">
           {displayPackForShop(selected.pack)}
         </p>

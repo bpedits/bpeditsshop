@@ -15,8 +15,7 @@ function csvCell(s: string): string {
 
 const rows = getProductCatalogExportRows();
 const header = [
-  "Artikel-Nr",
-  "Familien-Nr",
+  "Katalognummer",
   "Name",
   "Kategorie",
   "SKU",
@@ -30,8 +29,7 @@ const lines = [
   header.join(","),
   ...rows.map((r) =>
     [
-      csvCell(r.articleCatalogNo),
-      csvCell(r.familyCatalogNo),
+      csvCell(r.catalogNo),
       csvCell(r.name),
       csvCell(r.category),
       csvCell(r.sku),

@@ -69,7 +69,7 @@ export function productJsonLd(product: Product, slug: string): JsonLdThing {
   }
   props.push({
     "@type": "PropertyValue",
-    name: "Katalognummer (Familie)",
+    name: "Katalognummer",
     value: product.catalogNo,
   });
 
