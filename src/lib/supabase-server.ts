@@ -12,10 +12,15 @@
  */
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
-let cached: SupabaseClient | null = null;
+// SupabaseClient ohne Generics defaultiert auf Schema "public" — wir nutzen
+// aber `shop`. Daher locker mit `any`-Generics typisieren.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type ShopSupabaseClient = SupabaseClient<any, any, any>;
+
+let cached: ShopSupabaseClient | null = null;
 let cachedError: string | null = null;
 
-export function getSupabaseAdmin(): SupabaseClient {
+export function getSupabaseAdmin(): ShopSupabaseClient {
   if (cached) return cached;
   if (cachedError) throw new Error(cachedError);
 
