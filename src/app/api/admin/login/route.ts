@@ -94,7 +94,6 @@ export async function POST(req: Request) {
   `;
 
   const html = renderEmail({
-    title: `Admin-Login-Code: ${code}`,
     preheader: "Einmal-Code für den Admin-Bereich",
     eyebrow: "Admin-Login",
     contentHtml: content,
