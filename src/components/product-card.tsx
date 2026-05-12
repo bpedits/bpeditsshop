@@ -66,6 +66,9 @@ export function ProductCard({ product }: Props) {
         </Link>
 
         <p className="mt-2 line-clamp-2 text-[12px] leading-relaxed text-muted sm:text-[13px]">{cardDetailLine(product)}</p>
+        <p className="mt-1 font-mono text-[10px] tabular-nums text-muted/80 sm:text-[11px]">
+          Kat.-Nr. {product.catalogNo}
+        </p>
         <p className="mt-1.5 font-mono text-[11px] tabular-nums text-muted/90 sm:text-[12px]">SKU {defaultVariant.sku}</p>
 
         {typeof product.listPriceEur === "number" ? (

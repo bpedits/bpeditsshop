@@ -67,6 +67,11 @@ export function productJsonLd(product: Product, slug: string): JsonLdThing {
       value: product.molecularFormula,
     });
   }
+  props.push({
+    "@type": "PropertyValue",
+    name: "Katalognummer (Familie)",
+    value: product.catalogNo,
+  });
 
   return {
     "@context": "https://schema.org",

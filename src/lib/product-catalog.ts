@@ -90,15 +90,23 @@ function buildProducts(rows: PriceRow[], usedSlugs: Set<string>): Product[] {
 
   const out: Product[] = [];
   let idx = 0;
+  let familySeq = 0;
+  let articleSeq = 0;
 
   for (const [, groupRows] of groups) {
     groupRows.sort((a, b) => a.eur - b.eur || a.sku.localeCompare(b.sku, "de"));
     const first = groupRows[0]!;
-    const variants: ProductVariant[] = groupRows.map((r) => ({
-      sku: r.sku.trim(),
-      pack: r.pack,
-      listPriceEur: r.eur,
-    }));
+    familySeq += 1;
+    const familyCatalogNo = `BPP-F-${String(familySeq).padStart(4, "0")}`;
+    const variants: ProductVariant[] = groupRows.map((r) => {
+      articleSeq += 1;
+      return {
+        sku: r.sku.trim(),
+        pack: r.pack,
+        listPriceEur: r.eur,
+        catalogNo: `BPP-A-${String(articleSeq).padStart(5, "0")}`,
+      };
+    });
     const minEur = Math.min(...variants.map((v) => v.listPriceEur));
     const maxEur = Math.max(...variants.map((v) => v.listPriceEur));
     const name = first.name;
@@ -131,6 +139,7 @@ function buildProducts(rows: PriceRow[], usedSlugs: Set<string>): Product[] {
         rp({
           id,
           slug,
+          catalogNo: familyCatalogNo,
           sku: variants[0]!.sku,
           name,
           shortDescription,
@@ -169,3 +178,32 @@ const usedSlugs = new Set<string>();
 export const allProducts: Product[] = applyBestsellerFlags(
   rows.length === 0 ? [] : buildProducts(rows, usedSlugs),
 );
+
+/** Eine Zeile pro SKU für Exporte (CSV, Admin, Inventar). */
+export type ProductCatalogExportRow = {
+  articleCatalogNo: string;
+  familyCatalogNo: string;
+  name: string;
+  category: string;
+  sku: string;
+  pack: string;
+  listPriceEur: number;
+  slug: string;
+  shopPath: string;
+};
+
+export function getProductCatalogExportRows(): ProductCatalogExportRow[] {
+  return allProducts.flatMap((p) =>
+    p.variants.map((v) => ({
+      articleCatalogNo: v.catalogNo,
+      familyCatalogNo: p.catalogNo,
+      name: p.name,
+      category: p.category,
+      sku: v.sku,
+      pack: v.pack,
+      listPriceEur: v.listPriceEur,
+      slug: p.slug,
+      shopPath: `/shop/${p.slug}?sku=${encodeURIComponent(v.sku)}`,
+    })),
+  );
+}

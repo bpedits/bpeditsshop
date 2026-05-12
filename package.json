@@ -10,7 +10,8 @@
     "test:bank-order": "node ./scripts/test-bank-order-local.mjs",
     "test:smtp": "node ./scripts/test-smtp.mjs",
     "admin:create-user": "node ./scripts/admin-create-user.mjs",
-    "migrate:supabase": "node ./scripts/migrate-data-to-supabase.mjs"
+    "migrate:supabase": "node ./scripts/migrate-data-to-supabase.mjs",
+    "catalog:export": "tsx ./scripts/export-catalog.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.105.4",
@@ -28,6 +29,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.4",
     "tailwindcss": "^4",
+    "tsx": "^4.19.4",
     "typescript": "^5"
   }
 }

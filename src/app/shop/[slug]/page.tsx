@@ -49,6 +49,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     product.name,
     product.category,
     product.sku,
+    product.catalogNo,
     ...(product.casNumber ? [`CAS ${product.casNumber}`] : []),
     "RUO",
     "Forschungsmaterial",
@@ -206,6 +207,7 @@ export default async function ProductPage({ params }: Props) {
           </div>
 
           <dl className="mt-8 rounded-2xl border border-black/[0.06] bg-surface px-4 py-1 shadow-[0_4px_24px_-16px_rgba(0,0,0,0.08)] sm:mt-10 sm:px-5">
+            <SpecRow label="Katalognummer (Familie)">{product.catalogNo}</SpecRow>
             <SpecRow label="Ausführungen">
               {product.variants.length} SKU(s) — Referenzpreis <span className="font-medium text-foreground">pro Vial</span>;
               Dosierung oben wählbar.
