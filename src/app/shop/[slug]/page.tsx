@@ -193,7 +193,7 @@ export default async function ProductPage({ params }: Props) {
               <Link href="/checkout" className="font-medium text-tint hover:underline">
                 Warenkorb
               </Link>{" "}
-              optional Stripe-Checkout oder eine gebündelte{" "}
+              optional Bestellung per Banküberweisung oder eine gebündelte{" "}
               <Link href="/anfrage" className="font-medium text-tint hover:underline">
                 Anfrage
               </Link>

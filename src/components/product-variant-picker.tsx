@@ -91,7 +91,7 @@ export function ProductVariantPicker({ product }: Props) {
           <Link href="/checkout" className="font-medium text-tint hover:underline">
             Warenkorb
           </Link>{" "}
-          optional mit Stripe zahlen oder für eine{" "}
+          optional per Banküberweisung bestellen oder für eine{" "}
           <Link href={anfrageHref} className="font-medium text-tint hover:underline">
             institutionelle Anfrage
           </Link>{" "}
@@ -193,7 +193,7 @@ export function ProductVariantPicker({ product }: Props) {
         <Link href="/checkout" className="font-medium text-tint hover:underline">
           Warenkorb
         </Link>{" "}
-        optional mit Stripe zahlen oder Positionen für eine spätere{" "}
+        optional per Banküberweisung bestellen oder Positionen für eine spätere{" "}
         <Link href={`/anfrage?sku=${encodeURIComponent(selected.sku)}`} className="font-medium text-tint hover:underline">
           institutionelle Anfrage
         </Link>{" "}

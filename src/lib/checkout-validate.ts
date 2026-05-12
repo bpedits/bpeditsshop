@@ -16,7 +16,7 @@ function findVariantBySku(sku: string) {
 }
 
 /**
- * Warenkorb für Stripe: nur serverseitige Katalogpreise, Mengen begrenzt.
+ * Warenkorb für Zahlung / Bestellung: nur serverseitige Katalogpreise, Mengen begrenzt.
  */
 export function validateCartForPayment(
   raw: unknown,

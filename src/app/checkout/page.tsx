@@ -4,7 +4,7 @@ import { CheckoutClient } from "@/app/checkout/checkout-client";
 
 export const metadata: Metadata = {
   title: "Warenkorb",
-  description: `${brand.name}: Warenkorb — optional Stripe-Zahlung oder institutionelle Anfrage.`,
+  description: `${brand.name}: Warenkorb — Bestellung per Banküberweisung oder institutionelle Anfrage.`,
   robots: { index: false, follow: false },
 };
 

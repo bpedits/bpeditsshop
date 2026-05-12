@@ -1,10 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useCallback, useMemo, useState } from "react";
 import { useCartSnapshot } from "@/hooks/use-cart-snapshot";
 import {
   cartReferenceSubtotal,
+  clearCart,
   formatCartForInquiry,
   removeCartLine,
   setCartLineQty,
@@ -18,6 +20,7 @@ import { CheckoutRuoDialog } from "@/components/checkout-ruo-dialog";
 import { ProductCard } from "@/components/product-card";
 import { QuantityStepper } from "@/components/quantity-stepper";
 import { formatReferenceEur } from "@/lib/reference-price";
+import { DE_BUNDESLAND_OPTIONS, parseShippingAddress } from "@/lib/shipping-address";
 
 function productTouchesCartSkus(product: Product, cartSkus: Set<string>): boolean {
   return product.variants.some((v) => cartSkus.has(v.sku.toUpperCase()));
@@ -126,36 +129,102 @@ function CartLineRow({ line }: { line: CartLine }) {
 }
 
 export function CheckoutClient() {
+  const router = useRouter();
   const { lines, count, promoCode } = useCartSnapshot();
   const subtotal = useMemo(() => cartReferenceSubtotal(lines), [lines]);
   const inquiryPreview = useMemo(() => formatCartForInquiry(lines), [lines]);
-  const [payBusy, setPayBusy] = useState(false);
-  const [payError, setPayError] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [email, setEmail] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [company, setCompany] = useState("");
+  const [note, setNote] = useState("");
+  const [bundeslandCode, setBundeslandCode] = useState("");
+  const [streetLine1, setStreetLine1] = useState("");
+  const [streetLine2, setStreetLine2] = useState("");
+  const [postalCode, setPostalCode] = useState("");
+  const [city, setCity] = useState("");
   const [promoDraft, setPromoDraft] = useState("");
   const [promoTouched, setPromoTouched] = useState(false);
 
-  const startStripeCheckout = useCallback(async () => {
-    setPayBusy(true);
-    setPayError(null);
+  const submitBankOrder = useCallback(async () => {
+    setError(null);
+
+    const emailT = email.trim();
+    const nameT = `${firstName.trim()} ${lastName.trim()}`.trim();
+    const shippingPayload = {
+      countryCode: "DE" as const,
+      bundeslandCode: bundeslandCode.trim(),
+      postalCode: postalCode.trim(),
+      city: city.trim(),
+      streetLine1: streetLine1.trim(),
+      streetLine2: streetLine2.trim(),
+    };
+
+    if (!emailT || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailT)) {
+      setError("Bitte eine gültige E-Mail-Adresse eingeben.");
+      return;
+    }
+    if (firstName.trim().length < 2 || lastName.trim().length < 2) {
+      setError("Bitte Vor- und Nachname angeben (mindestens je 2 Zeichen).");
+      return;
+    }
+    const shipCheck = parseShippingAddress(shippingPayload);
+    if (!shipCheck.ok) {
+      setError(shipCheck.error);
+      return;
+    }
+
+    setBusy(true);
     try {
-      const res = await fetch("/api/checkout", {
+      const promo = (promoTouched ? promoDraft : promoCode).trim();
+      const res = await fetch("/api/bank-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ lines, promoCode }),
+        body: JSON.stringify({
+          email: emailT,
+          name: nameT,
+          company: company.trim(),
+          note: note.trim(),
+          promoCode: promo,
+          shipping: shippingPayload,
+          lines,
+        }),
       });
-      const data = (await res.json().catch(() => ({}))) as { url?: string; error?: string };
-      if (!res.ok) {
+      const data = (await res.json().catch(() => ({}))) as {
+        ok?: boolean;
+        error?: string;
+        redirectTo?: string;
+      };
+      if (!res.ok || !data.ok) {
         throw new Error(data.error || `HTTP ${res.status}`);
       }
-      if (!data.url) {
-        throw new Error("Keine Checkout-URL erhalten.");
-      }
-      window.location.href = data.url;
+      const to = typeof data.redirectTo === "string" ? data.redirectTo : "/checkout/erfolg";
+      writePromoCode("");
+      clearCart();
+      router.push(to);
     } catch (e) {
-      setPayError(e instanceof Error ? e.message : "Zahlung konnte nicht gestartet werden.");
-      setPayBusy(false);
+      setError(e instanceof Error ? e.message : "Bestellung konnte nicht gesendet werden.");
+      setBusy(false);
     }
-  }, [lines, promoCode]);
+  }, [
+    lines,
+    email,
+    firstName,
+    lastName,
+    company,
+    note,
+    bundeslandCode,
+    streetLine1,
+    streetLine2,
+    postalCode,
+    city,
+    promoCode,
+    promoDraft,
+    promoTouched,
+    router,
+  ]);
 
   if (lines.length === 0) {
     return (
@@ -190,7 +259,8 @@ export function CheckoutClient() {
         <h1 className="mt-2 text-[24px] font-semibold tracking-tight text-foreground sm:text-[28px]">Warenkorb</h1>
         <p className="mt-3 max-w-[34rem] text-[14px] leading-relaxed text-muted sm:text-[15px]">
           Referenzpreise (EUR / Vial) zur Orientierung — verbindliche Konditionen und Verfügbarkeit nach Prüfung Ihrer
-          Einrichtung.
+          Einrichtung. Zahlung per <strong className="font-medium text-foreground">Banküberweisung</strong>; Sie
+          erhalten die Bankdaten und Bestellübersicht per E-Mail.
         </p>
 
         <ul className="mt-6 flex flex-col gap-3 sm:mt-8 sm:gap-3">
@@ -199,7 +269,26 @@ export function CheckoutClient() {
           ))}
         </ul>
 
-        <div className="mt-6 space-y-4 rounded-xl border border-black/[0.07] bg-gradient-to-br from-tint/[0.05] via-white to-surface-pearl/40 px-4 py-4 sm:px-5 sm:py-5">
+        <form
+          name="checkout"
+          method="post"
+          action="#"
+          autoComplete="on"
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (busy) return;
+            void submitBankOrder();
+          }}
+          className="mt-6 space-y-4 rounded-xl border border-black/[0.07] bg-gradient-to-br from-tint/[0.05] via-white to-surface-pearl/40 px-4 py-4 sm:px-5 sm:py-5"
+        >
+          {/* Hilft Autofill (iOS/Chrome) zu erkennen, dass es eine deutsche Versandadresse ist */}
+          <input
+            type="hidden"
+            name="shipping country"
+            value="DE"
+            autoComplete="shipping country"
+            readOnly
+          />
           <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted">
@@ -210,79 +299,295 @@ export function CheckoutClient() {
                 {formatReferenceEur(subtotal)}
               </p>
             </div>
-            <div className="flex w-full flex-col gap-2 sm:w-auto sm:min-w-[220px]">
-              <div className="rounded-xl border border-black/[0.08] bg-white px-3 py-2">
-                <label className="block text-[11px] font-semibold uppercase tracking-[0.12em] text-muted">
-                  Rabattcode
-                </label>
-                <div className="mt-2 flex items-center gap-2">
-                  <input
-                    value={promoTouched ? promoDraft : promoCode}
-                    onChange={(e) => {
-                      setPromoTouched(true);
-                      setPromoDraft(e.target.value);
-                    }}
-                    placeholder="Code eingeben"
-                    className="h-10 w-full rounded-lg border border-black/[0.12] bg-white px-3 text-[14px] text-foreground outline-none ring-tint placeholder:text-muted focus:ring-2"
-                    autoCapitalize="characters"
-                    spellCheck={false}
-                  />
-                  <button
-                    type="button"
-                    className="inline-flex h-10 shrink-0 items-center justify-center rounded-lg bg-black/[0.06] px-3 text-[13px] font-medium text-foreground transition hover:bg-black/[0.09]"
-                    onClick={() => {
-                      const v = (promoTouched ? promoDraft : promoCode).trim();
-                      writePromoCode(v);
-                      setPromoDraft(v);
-                      setPromoTouched(true);
-                    }}
-                  >
-                    Anwenden
-                  </button>
-                </div>
-                {promoCode ? (
-                  <p className="mt-2 text-[12px] text-muted">
-                    Aktiv: <span className="font-mono font-semibold text-foreground">{promoCode}</span>
-                    <button
-                      type="button"
-                      className="ml-2 rounded-md px-2 py-1 text-[12px] font-medium text-tint hover:underline"
-                      onClick={() => {
-                        writePromoCode("");
-                        setPromoDraft("");
-                        setPromoTouched(false);
-                      }}
-                    >
-                      Entfernen
-                    </button>
-                  </p>
-                ) : (
-                  <p className="mt-2 text-[12px] text-muted">Wird im Stripe-Checkout automatisch angewendet.</p>
-                )}
-              </div>
+          </div>
+
+          <div className="grid gap-3 border-t border-black/[0.06] pt-4 sm:grid-cols-2">
+            <label className="block sm:col-span-2">
+              <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted">E-Mail (Pflicht)</span>
+              <input
+                type="email"
+                name="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                autoComplete="email"
+                inputMode="email"
+                autoCapitalize="none"
+                autoCorrect="off"
+                spellCheck={false}
+                enterKeyHint="next"
+                required
+                aria-required="true"
+                className="mt-1.5 h-11 w-full rounded-lg border border-black/[0.12] bg-white px-3 text-[14px] text-foreground outline-none ring-tint focus:ring-2"
+                placeholder="name@einrichtung.de"
+              />
+            </label>
+            <label className="block">
+              <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted">Vorname (Pflicht)</span>
+              <input
+                type="text"
+                name="given-name"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                autoComplete="given-name"
+                autoCapitalize="words"
+                enterKeyHint="next"
+                required
+                aria-required="true"
+                className="mt-1.5 h-11 w-full rounded-lg border border-black/[0.12] bg-white px-3 text-[14px] text-foreground outline-none ring-tint focus:ring-2"
+                placeholder="Vorname"
+              />
+            </label>
+            <label className="block">
+              <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted">Nachname (Pflicht)</span>
+              <input
+                type="text"
+                name="family-name"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                autoComplete="family-name"
+                autoCapitalize="words"
+                enterKeyHint="next"
+                required
+                aria-required="true"
+                className="mt-1.5 h-11 w-full rounded-lg border border-black/[0.12] bg-white px-3 text-[14px] text-foreground outline-none ring-tint focus:ring-2"
+                placeholder="Nachname"
+              />
+            </label>
+            <label className="block sm:col-span-2">
+              <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted">Einrichtung / Firma</span>
+              <input
+                type="text"
+                name="organization"
+                value={company}
+                onChange={(e) => setCompany(e.target.value)}
+                autoComplete="organization"
+                autoCapitalize="words"
+                enterKeyHint="next"
+                className="mt-1.5 h-11 w-full rounded-lg border border-black/[0.12] bg-white px-3 text-[14px] text-foreground outline-none ring-tint focus:ring-2"
+                placeholder="optional"
+              />
+            </label>
+          </div>
+
+          <fieldset className="rounded-xl border border-black/[0.08] bg-white/80 px-3 py-3 sm:px-4 sm:py-4">
+            <legend className="px-1 text-[12px] font-semibold uppercase tracking-[0.12em] text-foreground">
+              Lieferadresse (Pflicht)
+            </legend>
+            <p className="mt-1 text-[12px] leading-relaxed text-muted">
+              Lieferung nur <strong className="font-medium text-foreground">innerhalb Deutschlands</strong>. Bitte
+              Bundesland und vollständige Anschrift angeben — so wie bei einer normalen deutschen Lieferadresse.
+            </p>
+
+            <div className="mt-3 rounded-lg border border-black/[0.08] bg-white px-3 py-2.5 text-[13px] text-foreground">
+              <span className="text-muted">Lieferland:</span>{" "}
+              <span className="font-semibold">Deutschland</span>
+            </div>
+
+            <div className="mt-3 grid gap-3 sm:grid-cols-2">
+              <label className="block sm:col-span-2">
+                <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted">Bundesland (Pflicht)</span>
+                <select
+                  name="address-level1"
+                  value={bundeslandCode}
+                  onChange={(e) => setBundeslandCode(e.target.value)}
+                  className="mt-1.5 h-11 w-full rounded-lg border border-black/[0.12] bg-white px-3 text-[14px] text-foreground outline-none ring-tint focus:ring-2"
+                  autoComplete="shipping address-level1"
+                  required
+                  aria-required="true"
+                >
+                  <option value="">Bitte wählen …</option>
+                  {DE_BUNDESLAND_OPTIONS.map((b) => (
+                    <option key={b.code} value={b.code}>
+                      {b.label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label className="block sm:col-span-2">
+                <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted">Straße, Hausnummer</span>
+                <input
+                  type="text"
+                  name="address-line1"
+                  value={streetLine1}
+                  onChange={(e) => setStreetLine1(e.target.value)}
+                  autoComplete="shipping address-line1"
+                  autoCapitalize="words"
+                  enterKeyHint="next"
+                  required
+                  aria-required="true"
+                  className="mt-1.5 h-11 w-full rounded-lg border border-black/[0.12] bg-white px-3 text-[14px] text-foreground outline-none ring-tint focus:ring-2"
+                  placeholder="z. B. Musterstraße 12"
+                />
+              </label>
+              <label className="block sm:col-span-2">
+                <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted">
+                  Adresszusatz (optional)
+                </span>
+                <input
+                  type="text"
+                  name="address-line2"
+                  value={streetLine2}
+                  onChange={(e) => setStreetLine2(e.target.value)}
+                  autoComplete="shipping address-line2"
+                  autoCapitalize="words"
+                  enterKeyHint="next"
+                  className="mt-1.5 h-11 w-full rounded-lg border border-black/[0.12] bg-white px-3 text-[14px] text-foreground outline-none ring-tint focus:ring-2"
+                  placeholder="Etage, Gebäude, Abteilung …"
+                />
+              </label>
+              <label className="block">
+                <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted">PLZ</span>
+                <input
+                  type="text"
+                  name="postal-code"
+                  value={postalCode}
+                  onChange={(e) => setPostalCode(e.target.value.replace(/\D/g, "").slice(0, 5))}
+                  autoComplete="shipping postal-code"
+                  inputMode="numeric"
+                  pattern="[0-9]{5}"
+                  maxLength={5}
+                  enterKeyHint="next"
+                  required
+                  aria-required="true"
+                  className="mt-1.5 h-11 w-full rounded-lg border border-black/[0.12] bg-white px-3 text-[14px] text-foreground outline-none ring-tint focus:ring-2"
+                  placeholder="z. B. 85055"
+                />
+              </label>
+              <label className="block">
+                <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted">Ort</span>
+                <input
+                  type="text"
+                  name="address-level2"
+                  value={city}
+                  onChange={(e) => setCity(e.target.value)}
+                  autoComplete="shipping address-level2"
+                  autoCapitalize="words"
+                  enterKeyHint="next"
+                  required
+                  aria-required="true"
+                  className="mt-1.5 h-11 w-full rounded-lg border border-black/[0.12] bg-white px-3 text-[14px] text-foreground outline-none ring-tint focus:ring-2"
+                  placeholder="z. B. Ingolstadt"
+                />
+              </label>
+            </div>
+          </fieldset>
+
+          <div className="grid gap-3 sm:grid-cols-2">
+            <label className="block sm:col-span-2">
+              <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted">Nachricht (optional)</span>
+              <textarea
+                name="note"
+                value={note}
+                onChange={(e) => setNote(e.target.value)}
+                rows={3}
+                autoComplete="off"
+                className="mt-1.5 w-full resize-y rounded-lg border border-black/[0.12] bg-white px-3 py-2 text-[14px] text-foreground outline-none ring-tint focus:ring-2"
+                placeholder="Lieferhinweise, interne Bestellnummer, …"
+              />
+            </label>
+          </div>
+
+          <div className="rounded-xl border border-black/[0.08] bg-white px-3 py-2">
+            <label className="block text-[11px] font-semibold uppercase tracking-[0.12em] text-muted">
+              Rabattcode / Vermerk (optional)
+            </label>
+            <div className="mt-2 flex items-center gap-2">
+              <input
+                name="promo-code"
+                value={promoTouched ? promoDraft : promoCode}
+                onChange={(e) => {
+                  setPromoTouched(true);
+                  setPromoDraft(e.target.value);
+                }}
+                placeholder="wird in der E-Mail mitgeschickt"
+                className="h-10 w-full rounded-lg border border-black/[0.12] bg-white px-3 text-[14px] text-foreground outline-none ring-tint placeholder:text-muted focus:ring-2"
+                autoComplete="off"
+                autoCapitalize="characters"
+                spellCheck={false}
+              />
               <button
                 type="button"
-                disabled={payBusy}
-                onClick={() => void startStripeCheckout()}
-                className="inline-flex min-h-11 w-full touch-manipulation items-center justify-center rounded-full bg-[#635bff] px-6 text-[14px] font-semibold text-white shadow-[0_8px_24px_-8px_rgba(99,91,255,0.45)] transition hover:opacity-92 disabled:opacity-50"
+                className="inline-flex h-10 shrink-0 items-center justify-center rounded-lg bg-black/[0.06] px-3 text-[13px] font-medium text-foreground transition hover:bg-black/[0.09]"
+                onClick={() => {
+                  const v = (promoTouched ? promoDraft : promoCode).trim();
+                  writePromoCode(v);
+                  setPromoDraft(v);
+                  setPromoTouched(true);
+                }}
               >
-                {payBusy ? "Weiterleitung …" : "Mit Stripe bezahlen"}
+                Merken
               </button>
-              <Link
-                href="/anfrage?checkout=1"
-                className="inline-flex min-h-10 w-full touch-manipulation items-center justify-center rounded-full border border-black/[0.12] bg-white px-6 text-[13px] font-medium text-foreground transition hover:bg-black/[0.03]"
-              >
-                Stattdessen nur Anfrage
-              </Link>
             </div>
+            {promoCode ? (
+              <p className="mt-2 text-[12px] text-muted">
+                Aktiv: <span className="font-mono font-semibold text-foreground">{promoCode}</span>
+                <button
+                  type="button"
+                  className="ml-2 rounded-md px-2 py-1 text-[12px] font-medium text-tint hover:underline"
+                  onClick={() => {
+                    writePromoCode("");
+                    setPromoDraft("");
+                    setPromoTouched(false);
+                  }}
+                >
+                  Entfernen
+                </button>
+              </p>
+            ) : (
+              <p className="mt-2 text-[12px] text-muted">Wird bei der manuellen Prüfung berücksichtigt, sofern gültig.</p>
+            )}
           </div>
-          {payError ? (
-            <p className="rounded-lg border border-[#b00020]/20 bg-[#b00020]/[0.06] px-3 py-2 text-[13px] text-[#7a0000]" role="alert">
-              {payError}
+
+          {error ? (
+            <p
+              className="rounded-lg border border-[#b00020]/20 bg-[#b00020]/[0.06] px-3 py-2 text-[13px] text-[#7a0000]"
+              role="alert"
+            >
+              {error}
             </p>
           ) : null}
+
+          <p className="flex items-start gap-2 rounded-lg bg-black/[0.03] px-3 py-2 text-[12px] leading-relaxed text-muted">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="mt-0.5 size-3.5 shrink-0 text-foreground/70"
+              aria-hidden="true"
+            >
+              <rect x="3" y="5" width="18" height="14" rx="2" />
+              <path d="m3 7 9 6 9-6" />
+            </svg>
+            <span>
+              Die Bestätigung kommt direkt per E-Mail an die oben angegebene Adresse. Sollte sie nicht im{" "}
+              <strong className="font-medium text-foreground">Posteingang</strong> auftauchen, schauen Sie bitte einmal
+              in den <strong className="font-medium text-foreground">Spam-/Junk-Ordner</strong> — gerade bei
+              Erstkontakten landet sie dort manchmal.
+            </span>
+          </p>
+
+          <button
+            type="submit"
+            disabled={busy}
+            className="inline-flex min-h-11 w-full touch-manipulation items-center justify-center rounded-full bg-tint px-6 text-[14px] font-semibold text-white shadow-[0_8px_24px_-8px_rgba(0,102,204,0.35)] transition hover:opacity-92 disabled:opacity-50"
+          >
+            {busy ? "Wird gesendet …" : "Bestellung per Banküberweisung absenden"}
+          </button>
+
+          <Link
+            href="/anfrage?checkout=1"
+            className="inline-flex min-h-10 w-full touch-manipulation items-center justify-center rounded-full border border-black/[0.12] bg-white px-6 text-[13px] font-medium text-foreground transition hover:bg-black/[0.03]"
+          >
+            Stattdessen nur Anfrage
+          </Link>
+
           <p className="text-[11px] leading-relaxed text-muted">
-            Zahlung über <strong className="font-medium text-foreground">Stripe Checkout</strong> (Karte u. a.). Preise
-            werden serverseitig mit dem Katalog abgeglichen. Mit Fortfahren bestätigen Sie erneut, dass Sie{" "}
+            Positionen und Summen werden <strong className="font-medium text-foreground">serverseitig</strong> mit dem
+            Katalog abgeglichen. Mit Absenden bestätigen Sie erneut, dass Sie{" "}
             <strong className="font-medium text-foreground">nicht</strong> als Verbraucher handeln und Materialien{" "}
             <strong className="font-medium text-foreground">ausschließlich für professionelle Labor-/in-vitro-Forschung</strong>{" "}
             in einer geeigneten Einrichtung einsetzen —{" "}
@@ -294,7 +599,7 @@ export function CheckoutClient() {
             </Link>
             .
           </p>
-        </div>
+        </form>
 
         {inquiryPreview ? (
           <details className="mt-6 rounded-xl border border-black/[0.06] bg-white px-3 py-2.5 shadow-sm sm:px-4 sm:py-3">

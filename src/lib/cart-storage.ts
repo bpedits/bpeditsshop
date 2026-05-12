@@ -1,4 +1,4 @@
-/** Lokaler Warenkorb (localStorage) — Referenzpreise; Zahlung optional über Stripe-Checkout. */
+/** Lokaler Warenkorb (localStorage) — Referenzpreise; Bestellung optional per Banküberweisung im Checkout. */
 
 import { formatReferenceEur } from "@/lib/reference-price";
 import { effectiveReferencePerVialForSku } from "@/lib/volume-price-tiers";

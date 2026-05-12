@@ -56,8 +56,8 @@ export function ResearchUseNotice({ variant, idSuffix = variant }: { variant: Va
             keine Widerrufs-„Kulanz“ für Endverbraucherprodukte; es handelt sich nicht um Lifestyle- oder Wellnessware.
           </p>
           <p>
-            <strong className="font-medium text-foreground">Zahlung / Warenkorb:</strong> Eine Referenz-Zahlung (z.&nbsp;B.
-            Stripe) oder ein Warenkorb ersetzen <strong className="font-medium text-foreground">keine</strong> rechtliche
+            <strong className="font-medium text-foreground">Zahlung / Warenkorb:</strong> Eine Bestellung (z.&nbsp;B. per
+            Banküberweisung) oder ein Warenkorb ersetzen <strong className="font-medium text-foreground">keine</strong> rechtliche
             Einordnung Ihrer Nutzung und entbinden nicht von den Forschungsbedingungen.{" "}
             <Link href="/forschungsbedingungen-b2b" className="font-medium text-tint hover:underline">
               B2B-Forschungsbedingungen

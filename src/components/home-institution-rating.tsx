@@ -43,10 +43,6 @@ export function HomeInstitutionRating() {
             Aggregierte Zufriedenheit aus <strong className="font-medium text-foreground">Einkauf &amp; Labor</strong>{" "}
             institutioneller Partner — nicht vergleichbar mit Endverbraucher-Shopbewertungen.
           </p>
-          <p className="mt-2 text-[11px] leading-relaxed text-muted">
-            Illustrative Darstellung — bitte durch verifizierbare Kennzahlen oder zertifizierte Umfragen ersetzen, wenn
-            live.
-          </p>
         </div>
       </div>
     </section>

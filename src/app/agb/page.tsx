@@ -40,9 +40,10 @@ export default function AgbPage() {
       <p>(2) Versandkosten werden, soweit anfallend, gesondert ausgewiesen und sind vom Kunden zusätzlich zu tragen.</p>
       <h2>§ 4 Zahlung</h2>
       <p>
-        Zahlung kann soweit freigeschaltet über Stripe Checkout (z.&nbsp;B. Kartenzahlung) erfolgen;
-        Einzelheiten sind im Checkout angegeben. Abweichende Vereinbarungen sind schriftlich oder in Textform
-        möglich (z.&nbsp;B. institutionelle Anfrage ohne sofortige Online-Zahlung).
+        Zahlung erfolgt vorbehaltlich Vereinbarung insbesondere per <strong>Vorkasse / Banküberweisung</strong>;
+        Einzelheiten (Bankdaten, Verwendungszweck) werden im Checkout bzw. per E-Mail mitgeteilt. Abweichende
+        Vereinbarungen sind schriftlich oder in Textform möglich (z.&nbsp;B. institutionelle Anfrage ohne sofortige
+        Zahlung).
       </p>
       <h2>§ 5 Lieferung</h2>
       <p>

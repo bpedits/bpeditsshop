@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { brand } from "@/lib/brand";
-import { defaultFromAddress, escapeHtml, isResendConfigured, sendResendEmail } from "@/lib/resend-send";
+import { defaultFromAddress, escapeHtml, isMailerConfigured, sendMail } from "@/lib/mailer";
+import { renderEmail } from "@/lib/mail-template";
 
 function validEmail(s: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
@@ -28,34 +29,40 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: "Ungültige E-Mail." }, { status: 400 });
   }
 
-  if (!isResendConfigured()) {
+  if (!isMailerConfigured()) {
     return NextResponse.json({ ok: true, sent: false });
   }
 
   const from = defaultFromAddress(brand.name);
-  const refLine = ref ? `<p style="margin:16px 0;padding:12px 14px;background:#f5f5f7;border-radius:12px;"><strong>Ihre Referenz:</strong> ${escapeHtml(ref)}</p>` : "";
+  const refLine = ref
+    ? `<div style="margin:16px 0;padding:12px 16px;background:#f5f5f7;border-radius:12px;font-size:14px;"><strong>Ihre Referenz:</strong> <span style="font-family:'SFMono-Regular',Consolas,Menlo,monospace;">${escapeHtml(ref)}</span></div>`
+    : "";
 
-  const html = `
-    <div style="font-family:system-ui,-apple-system,sans-serif;font-size:15px;line-height:1.5;color:#1a1a1a;">
-      <p>Hallo,</p>
-      <p>vielen Dank für Ihre <strong>institutionelle Anfrage</strong> bei ${escapeHtml(brand.name)}.</p>
-      <p>Wir haben Ihre Angaben zur Prüfung erhalten (${escapeHtml(brand.domainDisplay)}). Es erfolgt keine automatische Auftragsbestätigung — Status: <strong>Pending Review</strong>.</p>
-      ${refLine}
-      <p style="color:#555;">Bei Rückfragen nutzen wir Ihre angegebene geschäftliche E-Mail.</p>
-      <p style="margin-top:24px;font-size:13px;color:#636366;">${escapeHtml(brand.legalName)}</p>
-    </div>
+  const content = `
+    <p style="margin:0 0 14px;">Hallo,</p>
+    <p style="margin:0 0 14px;">Ihre institutionelle Anfrage ist bei uns eingegangen. Wir prüfen Ihre Angaben in den nächsten Werktagen.</p>
+    <p style="margin:0 0 14px;">Eine automatische Auftragsbestätigung gibt es bei dieser Art der Anfrage nicht. Status: <strong>Pending Review</strong>.</p>
+    ${refLine}
+    <p style="margin:14px 0 0;color:#636366;font-size:13px;">Bei Rückfragen schreiben wir Ihnen unter Ihrer angegebenen geschäftlichen E-Mail.</p>
+    <p style="margin:18px 0 0;">Viele Grüße,<br/>Ihr Team von ${escapeHtml(brand.name)}</p>
   `;
 
-  const ok = await sendResendEmail({
+  const html = renderEmail({
+    preheader: `Ihre Anfrage ist bei ${brand.name} angekommen.`,
+    eyebrow: "Anfrage erhalten",
+    contentHtml: content,
+  });
+
+  const sent = await sendMail({
     from,
     to: [email],
     replyTo: brand.email,
-    subject: `Anfrage eingegangen — ${brand.name}`,
+    subject: `Ihre Anfrage ist angekommen, ${brand.name}`,
     html,
   });
 
-  if (!ok) {
-    return NextResponse.json({ ok: false, sent: false }, { status: 502 });
+  if (!sent.ok) {
+    return NextResponse.json({ ok: false, sent: false, error: sent.error }, { status: 502 });
   }
   return NextResponse.json({ ok: true, sent: true });
 }

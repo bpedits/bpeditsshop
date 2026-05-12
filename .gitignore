@@ -15,3 +15,6 @@ out/
 
 # Lokale/versehentliche Unter-Repos oder Exporte
 bpeditaahop/
+
+# Persistente Bestellungen (Bank-Order-Store)
+.data/

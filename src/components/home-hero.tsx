@@ -22,6 +22,25 @@ const HERO_MOBILE_H = 5504;
 export function HomeHero() {
   return (
     <section className="relative isolate overflow-hidden bg-[#ececee]">
+      {/*
+       * Preload-Hints — React hebt <link>-Tags automatisch in <head>.
+       * Je nach Viewport wird nur das passende Bild vom Browser geladen.
+       */}
+      <link
+        rel="preload"
+        as="image"
+        href={HERO_MOBILE}
+        media="(max-width: 767px)"
+        fetchPriority="high"
+      />
+      <link
+        rel="preload"
+        as="image"
+        href={HERO_DESKTOP}
+        media="(min-width: 768px)"
+        fetchPriority="high"
+      />
+
       <div className="pointer-events-none absolute inset-0 select-none" aria-hidden>
         <picture>
           <source
@@ -38,6 +57,8 @@ export function HomeHero() {
             height={HERO_MOBILE_H}
             sizes="100vw"
             className="h-full w-full object-cover object-[50%_38%] md:object-left md:object-center"
+            loading="eager"
+            decoding="async"
             fetchPriority="high"
           />
         </picture>

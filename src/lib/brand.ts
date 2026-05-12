@@ -14,8 +14,10 @@ export const brand = {
   origin: "https://www.bavaria-peptides.com",
   /** Öffentliche Kontakt-E-Mail (Impressum, Datenschutz, Antworten, strukturierte Daten) */
   email: "info@bavaria-peptides.com",
-  /** Nur Eingang Kontaktformular (/api/contact) — nicht zwangsläufig im Impressum */
-  contactFormInboxEmail: "update.acht@gmail.com",
+  /** Eingangsadresse Kontaktformular (/api/contact) — allgemeine Anfragen. */
+  contactFormInboxEmail: "info@bavaria-peptides.com",
+  /** Eingangsadresse Bestellbenachrichtigungen (/api/bank-order) — Team-Inbox. */
+  orderNotificationEmail: "bestellungen@bavaria-peptides.com",
   /** Leer lassen = keine Telefonzeile (Impressum, Kontakt, strukturierte Daten). */
   phoneDisplay: "",
   addressLine1: "Annette-Kolb-Straße 39",
