@@ -2,11 +2,15 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { brand } from "@/lib/brand";
 import { footerLegal } from "@/lib/navigation";
+import { buildPublicPageMetadata } from "@/lib/seo-page-meta";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPublicPageMetadata({
+  path: "/rechtliches",
   title: "Rechtliches",
-  description: `Alle rechtlichen Informationen und Service-Seiten von ${brand.name} im Überblick.`,
-};
+  description: `Rechtliches und Service-Übersicht von ${brand.name}: AGB, Datenschutz, Widerruf, Impressum, Cookies, Barrierefreiheit und Zahlungsinformationen.`,
+  keywords: ["Rechtliches", "AGB", "Impressum", "Widerruf", "Datenschutz"],
+  category: "legal",
+});
 
 export default function LegalHubPage() {
   return (

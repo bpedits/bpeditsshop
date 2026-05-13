@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
 import { brand } from "@/lib/brand";
 import { CheckoutClient } from "@/app/checkout/checkout-client";
+import { buildPublicPageMetadata } from "@/lib/seo-page-meta";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPublicPageMetadata({
+  path: "/checkout",
   title: "Warenkorb",
-  description: `${brand.name}: Warenkorb — Bestellung per Banküberweisung oder institutionelle Anfrage.`,
+  description: `${brand.name}: Checkout — Warenkorb, Lieferadresse Europa, Banküberweisung; institutionelle Anfrage möglich.`,
+  keywords: ["Checkout", "Warenkorb", "Banküberweisung"],
   robots: { index: false, follow: false },
-};
+});
 
 export default function CheckoutPage() {
   return (

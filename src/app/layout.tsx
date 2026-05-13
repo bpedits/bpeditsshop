@@ -3,7 +3,7 @@ import "./globals.css";
 import { JsonLd } from "@/components/json-ld";
 import { brand } from "@/lib/brand";
 import { organizationAndWebsiteGraph } from "@/lib/json-ld-schema";
-import { seoHomeDescription, seoSiteTagline } from "@/lib/seo-defaults";
+import { seoGlobalKeywords, seoHomeDescription, seoSiteTagline } from "@/lib/seo-defaults";
 import { siteOrigin } from "@/lib/site-origin";
 import { ConsentRuntime } from "@/components/consent-runtime";
 import { CookieBanner } from "@/components/cookie-banner";
@@ -23,6 +23,7 @@ export async function generateMetadata(): Promise<Metadata> {
     title: { default: brand.name, template: `%s · ${brand.name}` },
     applicationName: brand.name,
     description: seoHomeDescription,
+    keywords: [...seoGlobalKeywords],
     creator: brand.name,
     publisher: brand.legalName,
     category: "science",
@@ -52,8 +53,13 @@ export async function generateMetadata(): Promise<Metadata> {
       description: seoSiteTagline,
     },
     icons: {
-      icon: [{ url: "/favicon.png", type: "image/png" }],
-      apple: [{ url: "/favicon.png" }],
+      icon: [
+        { url: "/favicon.png", type: "image/png", sizes: "32x32" },
+        { url: "/favicon.png", type: "image/png", sizes: "192x192" },
+        { url: "/favicon.png", type: "image/png", sizes: "512x512" },
+      ],
+      apple: [{ url: "/favicon.png", type: "image/png", sizes: "180x180" }],
+      shortcut: ["/favicon.png"],
     },
     verification: {
       ...(google ? { google } : {}),

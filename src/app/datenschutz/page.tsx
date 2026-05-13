@@ -2,10 +2,15 @@ import type { Metadata } from "next";
 import { brand } from "@/lib/brand";
 import { LegalDisclaimer } from "@/components/legal-disclaimer";
 import { LegalProse } from "@/components/legal-prose";
+import { buildPublicPageMetadata } from "@/lib/seo-page-meta";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPublicPageMetadata({
+  path: "/datenschutz",
   title: "Datenschutz",
-};
+  description: `Datenschutzerklärung (DSGVO) von ${brand.name}: Verantwortliche Stelle, Zwecke der Verarbeitung, Rechte der Betroffenen, Cookies und Kontakt.`,
+  keywords: ["Datenschutz", "DSGVO", "Privacy", "Personenbezogene Daten", brand.name],
+  category: "legal",
+});
 
 export default function DatenschutzPage() {
   return (

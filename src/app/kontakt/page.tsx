@@ -3,11 +3,15 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 import { brand, brandPhoneHref } from "@/lib/brand";
 import { ContactForm } from "@/components/contact-form";
+import { buildPublicPageMetadata } from "@/lib/seo-page-meta";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPublicPageMetadata({
+  path: "/kontakt",
   title: "Kontakt",
-  description: `Kontakt zu ${brand.name}: Adresse, E-Mail und sicheres Nachrichtenformular — institutionelle Anliegen (B2B / RUO).`,
-};
+  description: `Kontakt zu ${brand.name} in ${brand.city}: Adresse, E-Mail und sicheres Formular — institutionelle Anfragen, B2B und RUO-Forschungsmaterial.`,
+  keywords: ["Kontakt", "Anfrage", "B2B Kontakt", "Laborbeschaffung", brand.email],
+  category: "business",
+});
 
 function IconMap() {
   return (

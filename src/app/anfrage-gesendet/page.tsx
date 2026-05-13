@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { InquiryConfirmation } from "@/components/inquiry-confirmation";
+import { buildPublicPageMetadata } from "@/lib/seo-page-meta";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPublicPageMetadata({
+  path: "/anfrage-gesendet",
   title: "Anfrage eingegangen",
-  description: "Ihre institutionelle Anfrage — Bestätigung und nächste Schritte.",
+  description: "Bestätigung: institutionelle Anfrage eingegangen — nächste Schritte und Kontakt.",
+  keywords: ["Anfrage bestätigt", "Institutionelle Anfrage"],
   robots: { index: false, follow: true },
-};
+});
 
 function ConfirmationFallback() {
   return (

@@ -8,11 +8,15 @@ import {
   InstitutionalSectionCard,
 } from "@/components/institutional-hub";
 import { ResearchUseNotice } from "@/components/research-use-notice";
+import { buildPublicPageMetadata } from "@/lib/seo-page-meta";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPublicPageMetadata({
+  path: "/affiliate",
   title: "Partnerprogramm",
-  description: `${brand.name}: Partner- und Affiliate-System für institutionelle Multiplikatoren — Attribution, Compliance (RUO), Onboarding und faire Incentives im B2B-Rahmen.`,
-};
+  description: `${brand.name}: Partner- und Affiliate-Programm für institutionelle Multiplikatoren — Attribution, RUO-Compliance, Onboarding und faire B2B-Incentives.`,
+  keywords: ["Affiliate", "Partnerprogramm", "B2B Partner", "RUO Compliance"],
+  category: "business",
+});
 
 const NAV = [
   { href: "#system", label: "Systemüberblick" },

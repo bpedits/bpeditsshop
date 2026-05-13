@@ -4,11 +4,15 @@ import { brand } from "@/lib/brand";
 import { LegalDisclaimer } from "@/components/legal-disclaimer";
 import { LegalProse } from "@/components/legal-prose";
 import { LegalSectionCard } from "@/components/legal-section-card";
+import { buildPublicPageMetadata } from "@/lib/seo-page-meta";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPublicPageMetadata({
+  path: "/agb",
   title: "AGB",
-  description: `Allgemeine Geschäftsbedingungen von ${brand.name} — Lieferung, Zahlung, Rückgabe und Gewährleistung.`,
-};
+  description: `Allgemeine Geschäftsbedingungen (AGB) von ${brand.name}: Vertragsschluss, Preise, Zahlung, Lieferung Europa, Widerruf/Rückgabe mit Eingangsprüfung, Gewährleistung und Haftung.`,
+  keywords: ["AGB", "Geschäftsbedingungen", "Rückgabe", "Widerruf", "Versand", "Zahlung"],
+  category: "legal",
+});
 
 export default function AgbPage() {
   return (

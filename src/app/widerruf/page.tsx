@@ -4,11 +4,15 @@ import { brand } from "@/lib/brand";
 import { LegalDisclaimer } from "@/components/legal-disclaimer";
 import { LegalProse } from "@/components/legal-prose";
 import { LegalSectionCard } from "@/components/legal-section-card";
+import { buildPublicPageMetadata } from "@/lib/seo-page-meta";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPublicPageMetadata({
+  path: "/widerruf",
   title: "Widerrufsrecht",
-  description: `Widerrufsbelehrung und Hinweise zur Rücksendung bei ${brand.name}.`,
-};
+  description: `Widerrufsbelehrung für ${brand.name}: Frist, Formular, Folgen des Widerrufs, Rücksendung und Eingangsprüfung vor Erstattung — Verweis auf die AGB.`,
+  keywords: ["Widerruf", "Widerrufsrecht", "Rücksendung", "Verbraucher"],
+  category: "legal",
+});
 
 export default function WiderrufPage() {
   return (

@@ -2,35 +2,28 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
 import { brand } from "@/lib/brand";
-import { seoGlobalKeywords } from "@/lib/seo-defaults";
-import { siteOrigin } from "@/lib/site-origin";
+import { buildPublicPageMetadata } from "@/lib/seo-page-meta";
 import { getProducts } from "@/lib/products";
 import { ResearchUseNotice } from "@/components/research-use-notice";
 import { ShopProductGrid } from "@/components/shop-product-grid";
 
-const shopCanonical = `${siteOrigin()}/shop`;
+const shopDesc = `${brand.name}: Öffentlicher Forschungskatalog mit Suche, Kategorien und Referenzpreisen (EUR pro Vial) — institutionelle Konditionen und Freigaben auf Anfrage. RUO / Labor, ${brand.city}. Lieferung in ausgewählte europäische Länder.`;
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPublicPageMetadata({
+  path: "/shop",
   title: "Katalog",
-  description: `${brand.name}: Öffentlicher Forschungskatalog mit Suche, Kategorien und Referenzpreisen (EUR pro Vial) — institutionelle Konditionen und Freigaben auf Anfrage. RUO / Labor, ${brand.city}.`,
-  keywords: ["Forschungskatalog", "Peptide RUO", "RUO Katalog", "Referenzpreis EUR", ...seoGlobalKeywords],
-  alternates: {
-    canonical: shopCanonical,
-    languages: {
-      "de-DE": shopCanonical,
-      "x-default": shopCanonical,
-    },
-  },
-  openGraph: {
-    url: shopCanonical,
-    title: `Forschungskatalog · ${brand.name}`,
-    description: `Peptide und Forschungsmaterialien im institutionellen Katalog — ${brand.city}, Deutschland.`,
-  },
-  twitter: {
-    title: `Forschungskatalog · ${brand.name}`,
-    description: `RUO-Katalog mit Suche und technischen Stammdaten — ${brand.name}.`,
-  },
-};
+  description: shopDesc,
+  socialDescription: `Peptide und Forschungsmaterialien im institutionellen Katalog — ${brand.city}, ${brand.country}.`,
+  keywords: [
+    "Forschungskatalog",
+    "Peptide RUO",
+    "RUO Katalog",
+    "Referenzpreis EUR",
+    "Shop Suche Peptide",
+    "Katalogfilter",
+  ],
+  category: "science",
+});
 
 export default async function ShopPage() {
   const catalog = await getProducts();

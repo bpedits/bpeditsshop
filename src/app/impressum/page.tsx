@@ -2,10 +2,15 @@ import type { Metadata } from "next";
 import { brand } from "@/lib/brand";
 import { LegalProse } from "@/components/legal-prose";
 import { LegalDisclaimer } from "@/components/legal-disclaimer";
+import { buildPublicPageMetadata } from "@/lib/seo-page-meta";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPublicPageMetadata({
+  path: "/impressum",
   title: "Impressum",
-};
+  description: `Impressum und rechtliche Anbieterkennzeichnung (TMG/MStV) von ${brand.name} — ${brand.city}: Kontakt, Verantwortlicher, Umsatzsteuer-Hinweis.`,
+  keywords: ["Impressum", "TMG", "MStV", "Anbieterkennzeichnung", brand.legalName],
+  category: "legal",
+});
 
 export default function ImpressumPage() {
   return (

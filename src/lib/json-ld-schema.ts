@@ -29,7 +29,16 @@ export function organizationAndWebsiteGraph(): JsonLdThing {
           addressLocality: brand.city,
           addressCountry: "DE",
         },
-        areaServed: ["DE", "EU"],
+        areaServed: [
+          { "@type": "Country", name: "Deutschland" },
+          { "@type": "Place", name: "Europäische Union" },
+        ],
+        knowsAbout: [
+          "Research Use Only (RUO)",
+          "Peptide Forschung",
+          "Laborreferenzmaterialien",
+          "institutionelle Beschaffung",
+        ],
       },
       {
         "@type": "WebSite",
@@ -39,13 +48,21 @@ export function organizationAndWebsiteGraph(): JsonLdThing {
         description: seoPlainSiteDescription(),
         inLanguage: "de-DE",
         publisher: { "@id": orgId },
+        potentialAction: {
+          "@type": "SearchAction",
+          target: {
+            "@type": "EntryPoint",
+            urlTemplate: `${origin}/shop?q={search_term_string}`,
+          },
+          "query-input": "required name=search_term_string",
+        },
       },
     ],
   };
 }
 
 function seoPlainSiteDescription(): string {
-  return `${brand.name}: Forschungsmaterialien (RUO), Katalog und institutionelle Anfrage — ${brand.city}, Deutschland.`;
+  return `${brand.name}: Forschungsmaterialien (RUO), Katalog und institutionelle Anfrage — Lieferung in Europa (siehe Checkout), ${brand.city}, Deutschland.`;
 }
 
 /** Produktseite: informativ ohne Preis-Snippets (kein Offer → keine irreführenden Rich Results). */

@@ -3,11 +3,15 @@ import Link from "next/link";
 import { brand } from "@/lib/brand";
 import { LegalProse } from "@/components/legal-prose";
 import { LegalDisclaimer } from "@/components/legal-disclaimer";
+import { buildPublicPageMetadata } from "@/lib/seo-page-meta";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPublicPageMetadata({
+  path: "/barrierefreiheit",
   title: "Barrierefreiheit",
-  description: `Erklärung zur Barrierefreiheit für ${brand.name} (${brand.domainDisplay}).`,
-};
+  description: `Barrierefreiheitserklärung für ${brand.domainDisplay}: WCAG/BITV-Orientierung, Feedback-Kanal und geplante Verbesserungen.`,
+  keywords: ["Barrierefreiheit", "WCAG", "BITV", "Zugänglichkeit Website"],
+  category: "legal",
+});
 
 export default function AccessibilityPage() {
   return (

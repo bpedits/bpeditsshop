@@ -9,33 +9,24 @@ import { QualityChainSection } from "@/components/quality-chain-section";
 import { ShopProductGrid } from "@/components/shop-product-grid";
 import { TrustStrip } from "@/components/trust-strip";
 import { brand } from "@/lib/brand";
-import { seoGlobalKeywords, seoHomeDescription, seoSiteTagline } from "@/lib/seo-defaults";
-import { siteOrigin } from "@/lib/site-origin";
+import { seoHomeDescription, seoSiteTagline } from "@/lib/seo-defaults";
+import { buildPublicPageMetadata } from "@/lib/seo-page-meta";
 import { getProducts } from "@/lib/products";
 
-const homeCanonical = siteOrigin();
-
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPublicPageMetadata({
+  path: "/",
   title: "Peptide & Forschungsmaterialien (RUO)",
   description: seoHomeDescription,
-  keywords: [...seoGlobalKeywords],
-  alternates: {
-    canonical: homeCanonical,
-    languages: {
-      "de-DE": homeCanonical,
-      "x-default": homeCanonical,
-    },
-  },
-  openGraph: {
-    url: homeCanonical,
-    title: `${brand.name} — Peptide & Forschungsmaterialien (RUO)`,
-    description: seoSiteTagline,
-  },
-  twitter: {
-    title: `${brand.name} — Forschungskatalog & Institution`,
-    description: seoSiteTagline,
-  },
-};
+  socialDescription: seoSiteTagline,
+  keywords: [
+    "Bavaria Peptides",
+    "Forschungskatalog Peptide",
+    "Referenzpreis EUR Vial",
+    "CAS Stammdaten",
+    "institutionelle Anfrage",
+  ],
+  category: "science",
+});
 
 export default async function HomePage() {
   const catalog = await getProducts();

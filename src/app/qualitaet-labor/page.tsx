@@ -4,11 +4,15 @@ import { brand } from "@/lib/brand";
 import { InstitutionalCtaBar, InstitutionalSectionCard } from "@/components/institutional-hub";
 import { QualityChainSection } from "@/components/quality-chain-section";
 import { ResearchUseNotice } from "@/components/research-use-notice";
+import { buildPublicPageMetadata } from "@/lib/seo-page-meta";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPublicPageMetadata({
+  path: "/qualitaet-labor",
   title: "Qualität & Labor",
-  description: `RUO, Spezifikation, CoA, Chargenrückverfolgung, Analytik, Stabilität, Kältekette und QMS-Orientierung — Qualitätsrahmen von ${brand.name} für institutionelle Forschung.`,
-};
+  description: `${brand.name}: Qualität, Spezifikation, CoA, Chargenrückverfolgung, Analytik, Stabilität und QMS-Orientierung für RUO-Forschungsmaterialien.`,
+  keywords: ["Qualität", "CoA", "Laborqualität", "Chargenrückverfolgung", "RUO Qualität"],
+  category: "science",
+});
 
 /** Labor/Maschine (Querformat) — auf allen Viewports, inkl. Handy (kein separates Dokumenten-Motiv). */
 const QUALITY_HERO_IMG =

@@ -5,11 +5,15 @@ import { LegalDisclaimer } from "@/components/legal-disclaimer";
 import { CONSENT_STORAGE_KEY } from "@/lib/cookie-consent";
 import { CART_STORAGE_KEY } from "@/lib/cart-storage";
 import { ResearchUseNotice } from "@/components/research-use-notice";
+import { buildPublicPageMetadata } from "@/lib/seo-page-meta";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPublicPageMetadata({
+  path: "/cookies",
   title: "Cookie-Hinweis",
-  description: `Informationen zu Cookies, Einwilligung und lokaler Speicherung bei ${brand.name}.`,
-};
+  description: `Cookies, Einwilligung und lokale Speicherung bei ${brand.name}: Consent-Banner, technisch notwendige Daten, Warenkorb-Schlüssel und Verweis auf die Datenschutzerklärung.`,
+  keywords: ["Cookies", "Einwilligung", "Local Storage", "Consent", "DSGVO Cookies"],
+  category: "legal",
+});
 
 export default function CookiesPage() {
   return (

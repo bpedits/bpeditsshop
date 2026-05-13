@@ -15,6 +15,7 @@ import { getProductBySlug } from "@/lib/products";
 import { suggestedProductsForPdp } from "@/lib/product-suggestions";
 import { getProductTrustLine } from "@/lib/product-trust";
 import { siteOrigin } from "@/lib/site-origin";
+import { SEO_OG_IMAGE_PATH } from "@/lib/seo-page-meta";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -56,10 +57,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     brand.city,
   ];
 
+  const ogDefault = `${base}${SEO_OG_IMAGE_PATH}`;
+
   return {
     title: product.name,
     description,
     keywords,
+    authors: [{ name: brand.legalName, url: base }],
     alternates: {
       canonical,
       languages: {
@@ -73,11 +77,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: `${product.name} · ${brand.name}`,
       description,
       siteName: brand.name,
+      images: [{ url: ogDefault, width: 1200, height: 630, alt: `${product.name} — ${brand.name}` }],
     },
     twitter: {
       card: "summary_large_image",
       title: `${product.name}`,
       description,
+      images: [ogDefault],
     },
     robots: { index: true, follow: true },
   };

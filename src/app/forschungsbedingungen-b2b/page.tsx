@@ -1,10 +1,14 @@
 import type { Metadata } from "next";
 import { brand } from "@/lib/brand";
+import { buildPublicPageMetadata } from "@/lib/seo-page-meta";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPublicPageMetadata({
+  path: "/forschungsbedingungen-b2b",
   title: "B2B-Forschungsbedingungen",
-  description: `Rahmen für institutionelle Anfragen und RUO-Lieferungen — ${brand.name}.`,
-};
+  description: `B2B- und RUO-Forschungsbedingungen von ${brand.name}: professionelle Nutzung, Labor/in vitro, keine Verbraucher-Anwendung, institutionelle Einbindung.`,
+  keywords: ["B2B Forschung", "RUO Bedingungen", "Forschungsrahmen", "Laborrecht"],
+  category: "legal",
+});
 
 export default function B2BResearchTermsPage() {
   return (

@@ -8,11 +8,15 @@ import {
   InstitutionalSectionCard,
 } from "@/components/institutional-hub";
 import { ResearchUseNotice } from "@/components/research-use-notice";
+import { buildPublicPageMetadata } from "@/lib/seo-page-meta";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPublicPageMetadata({
+  path: "/versand",
   title: "Versand & Lieferung",
-  description: `${brand.name}: Lieferkette, Übergabe an das Institut, Kältekette, Zoll, Eskalation und Dokumentation — Rahmen für Forschungslogistik (B2B).`,
-};
+  description: `${brand.name}: Versand und Lieferkette für Forschungsmaterialien — Übergabe ans Institut, Kältekette, Zoll, Dokumentation und B2B-Logistikrahmen (${brand.city}).`,
+  keywords: ["Versand", "Lieferung", "Kältekette", "Forschungslogistik", "EU Versand"],
+  category: "business",
+});
 
 const NAV = [
   { href: "#einordnung", label: "Einordnung" },

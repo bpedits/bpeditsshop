@@ -3,10 +3,15 @@ import Link from "next/link";
 import { brand } from "@/lib/brand";
 import { LegalProse } from "@/components/legal-prose";
 import { LegalDisclaimer } from "@/components/legal-disclaimer";
+import { buildPublicPageMetadata } from "@/lib/seo-page-meta";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPublicPageMetadata({
+  path: "/zahlung-versand",
   title: "Lieferung & Konditionen",
-};
+  description: `${brand.name}: Lieferung, Zahlungs- und Konditionsrahmen — institutionelle Anfragen, Prüfung vor Angebot, AGB-Verweis und Export/Compliance-Hinweise.`,
+  keywords: ["Lieferung", "Zahlung", "Konditionen", "B2B Angebot", "Compliance"],
+  category: "business",
+});
 
 export default function LieferungKonditionenPage() {
   return (

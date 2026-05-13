@@ -2,11 +2,15 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { brand } from "@/lib/brand";
 import { FaqSection } from "@/components/faq-section";
+import { buildPublicPageMetadata } from "@/lib/seo-page-meta";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPublicPageMetadata({
+  path: "/hilfe",
   title: "Hilfe & FAQ",
-  description: `Häufige Fragen zu Bestellung, Lieferung, Zahlung und Datenschutz bei ${brand.name}.`,
-};
+  description: `Hilfe und FAQ zu ${brand.name}: Bestellung, Banküberweisung, Lieferung Europa, RUO-Hinweise, Datenschutz und institutionelle Anfragen.`,
+  keywords: ["FAQ", "Hilfe", "Bestellung", "Banküberweisung", "RUO Fragen"],
+  category: "reference",
+});
 
 export default function HelpPage() {
   return (

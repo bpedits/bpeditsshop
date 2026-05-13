@@ -13,7 +13,7 @@ export default function manifest(): MetadataRoute.Manifest {
     theme_color: "#0066cc",
     lang: "de",
     dir: "ltr",
-    categories: ["business", "science"],
+    categories: ["business", "science", "shopping"],
     icons: [
       {
         src: "/favicon.png",

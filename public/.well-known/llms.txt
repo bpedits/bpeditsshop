@@ -1,0 +1,35 @@
+# llms.txt — maschinenlesbare Übersicht (KI / Assistenten)
+# Projekt: Bavaria Peptides — Forschungskatalog (RUO), B2B
+
+Site: https://www.bavaria-peptides.com
+Language: de-DE
+Audience: professionelle Forschungseinrichtungen, Einkauf, Laborleitung (kein Endverbraucher-Wellness)
+
+## Kurzbeschreibung
+Öffentlicher Katalog mit Referenzpreisen (EUR/Vial) für Peptide und Forschungsmaterialien (Research Use Only).
+Bestellung per Banküberweisung nach Checkout; institutionelle Anfragen ohne automatische Zahlung.
+Lieferadresse: ausgewählte europäische Länder (Whitelist im Checkout).
+Keine Arzneimittel; keine Anwendung am Menschen/Tier — ausschließlich Labor-/in-vitro-Forschung.
+
+## Wichtige URLs
+- Start: /
+- Katalog: /shop
+- Produktseiten: /shop/{slug}
+- Anfrage (B2B): /anfrage
+- Checkout: /checkout
+- Kontakt: /kontakt
+- Hilfe: /hilfe
+- AGB: /agb
+- Widerruf: /widerruf
+- Datenschutz: /datenschutz
+- Impressum: /impressum
+- Forschungsbedingungen B2B: /forschungsbedingungen-b2b
+- Lieferung & Konditionen: /zahlung-versand
+- Sitemap: /sitemap.xml
+
+## Nicht indexieren (technisch / privat)
+- /checkout, /checkout/erfolg, /api/*, /admin/*, /anfrage-gesendet
+
+## Kontakt (öffentlich)
+E-Mail: info@bavaria-peptides.com
+Standort: Ingolstadt, Bayern, Deutschland (siehe Impressum)

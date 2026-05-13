@@ -5,12 +5,15 @@ import { formatIbanGroups, getBankTransferConfig } from "@/lib/bank-transfer-con
 import { CopyField } from "@/components/copy-field";
 import { readOrder } from "@/lib/order-store";
 import { formatReferenceEur } from "@/lib/reference-price";
+import { buildPublicPageMetadata } from "@/lib/seo-page-meta";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPublicPageMetadata({
+  path: "/checkout/erfolg",
   title: "Bestellung eingegangen",
-  description: `${brand.name}: Zahlung per Banküberweisung — nächste Schritte.`,
+  description: `${brand.name}: Bestellung eingegangen — Banküberweisung, Verwendungszweck und nächste Schritte.`,
+  keywords: ["Bestellbestätigung", "Banküberweisung"],
   robots: { index: false, follow: false },
-};
+});
 
 // Diese Seite spiegelt eine konkrete (gespeicherte) Bestellung — niemals statisch cachen.
 export const dynamic = "force-dynamic";

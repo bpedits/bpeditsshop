@@ -8,11 +8,15 @@ import {
   InstitutionalSectionCard,
 } from "@/components/institutional-hub";
 import { ResearchUseNotice } from "@/components/research-use-notice";
+import { buildPublicPageMetadata } from "@/lib/seo-page-meta";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPublicPageMetadata({
+  path: "/ueber-uns",
   title: "Über uns",
-  description: `${brand.name}: Profil, Operating Model für B2B-Forschung, Governance, Qualitäts-Orientierung, Logistik-Einbettung und verantwortungsvoller Umgang mit RUO-Materialien.`,
-};
+  description: `${brand.name} in ${brand.city}: Profil, Operating Model für B2B-Forschung, Governance, Qualität, Logistik und verantwortungsvoller Umgang mit RUO-Materialien.`,
+  keywords: ["Über uns", "Unternehmen", "B2B Peptide", "Forschungsbeschaffung"],
+  category: "business",
+});
 
 const NAV = [
   { href: "#profil", label: "Profil & Auftrag" },

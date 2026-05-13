@@ -1,11 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { brand } from "@/lib/brand";
+import { buildPublicPageMetadata } from "@/lib/seo-page-meta";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPublicPageMetadata({
+  path: "/sicherheit-vertraulichkeit",
   title: "Sicherheit & Vertraulichkeit",
-  description: `TLS, Datenminimierung und vertrauliche Abwicklung bei ${brand.name}.`,
-};
+  description: `Sicherheit und Vertraulichkeit bei ${brand.name}: TLS/HTTPS, Datenminimierung, sichere Kommunikation und vertrauliche Abwicklung institutioneller Anfragen.`,
+  keywords: ["TLS", "HTTPS", "Informationssicherheit", "Vertraulichkeit", "TOM"],
+  category: "reference",
+});
 
 export default function SecurityPage() {
   return (
