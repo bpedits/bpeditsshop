@@ -177,6 +177,8 @@ export default async function CheckoutErfolgPage({ searchParams }: Props) {
               <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-foreground">Kontakt</p>
               <p className="mt-2 font-medium text-foreground">{order.name}</p>
               {order.company ? <p className="text-muted">{order.company}</p> : null}
+              {order.taxNumber ? <p className="text-muted">Steuernummer: {order.taxNumber}</p> : null}
+              {order.hrb ? <p className="text-muted">HRB: {order.hrb}</p> : null}
               <p className="text-muted">{order.email}</p>
             </div>
             <div className="rounded-xl border border-black/[0.08] bg-white p-4 text-[13px] leading-relaxed shadow-sm">
@@ -190,7 +192,13 @@ export default async function CheckoutErfolgPage({ searchParams }: Props) {
               <p className="text-muted">
                 {order.shipping.postalCode} {order.shipping.city}
               </p>
-              <p className="text-muted">{order.shipping.bundeslandLabel} · Deutschland</p>
+              <p className="text-muted">
+                {order.shipping.countryCode === "DE"
+                  ? `${order.shipping.bundeslandLabel} · ${order.shipping.countryLabel}`
+                  : order.shipping.bundeslandLabel
+                    ? `${order.shipping.bundeslandLabel} · ${order.shipping.countryLabel}`
+                    : order.shipping.countryLabel}
+              </p>
             </div>
           </section>
 

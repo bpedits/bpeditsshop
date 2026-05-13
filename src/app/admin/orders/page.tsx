@@ -54,6 +54,7 @@ export default async function AdminOrdersPage(props: {
         o.email.toLowerCase().includes(q) ||
         o.name.toLowerCase().includes(q) ||
         (o.company ?? "").toLowerCase().includes(q) ||
+        o.shipping.countryLabel.toLowerCase().includes(q) ||
         o.shipping.city.toLowerCase().includes(q) ||
         o.shipping.postalCode.toLowerCase().includes(q) ||
         o.lines.some((l) => l.productName.toLowerCase().includes(q) || l.sku.toLowerCase().includes(q))

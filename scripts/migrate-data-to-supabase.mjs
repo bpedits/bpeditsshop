@@ -83,6 +83,8 @@ async function main() {
       email: order.email,
       name: order.name,
       company: order.company ?? null,
+      tax_number: order.taxNumber ?? null,
+      hrb: order.hrb ?? null,
       note: order.note ?? null,
       promo_code: order.promoCode ?? null,
       shipping_country: order.shipping?.countryCode || "DE",

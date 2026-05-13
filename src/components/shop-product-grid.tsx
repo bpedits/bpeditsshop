@@ -26,13 +26,13 @@ export function ShopProductGrid({ products: catalog }: Props) {
     [catalog],
   );
 
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(() => searchParams.get("q") ?? "");
   const [category, setCategory] = useState<string | null>(null);
   const [sort, setSort] = useState<ShopSortId>("catalog");
 
   useEffect(() => {
     const q = searchParams.get("q") ?? "";
-    setQuery(q);
+    setQuery((prev) => (prev === q ? prev : q));
   }, [searchParams]);
 
   useEffect(() => {

@@ -6,6 +6,7 @@
  * Datei-Implementierung, damit aufrufende Routen / Pages nichts wissen müssen.
  */
 import { getSupabaseAdmin } from "@/lib/supabase-server";
+import { europeShippingCountryLabel } from "@/lib/europe-shipping-countries";
 
 const REF_RX = /^BP-[A-Z0-9]{1,20}-[A-Z0-9]{1,20}$/i;
 
@@ -19,7 +20,8 @@ export type StoredOrderLine = {
 };
 
 export type StoredShipping = {
-  countryCode: "DE";
+  countryCode: string;
+  countryLabel: string;
   bundeslandCode: string;
   bundeslandLabel: string;
   streetLine1: string;
@@ -34,6 +36,10 @@ export type StoredOrder = {
   email: string;
   name: string;
   company?: string;
+  /** Steuernummer (optional, vom Kunden angegeben). */
+  taxNumber?: string;
+  /** HRB / Handelsregister (optional). */
+  hrb?: string;
   note?: string;
   promoCode?: string;
   shipping: StoredShipping;
@@ -53,6 +59,8 @@ type OrderRow = {
   email: string;
   name: string;
   company: string | null;
+  tax_number: string | null;
+  hrb: string | null;
   note: string | null;
   promo_code: string | null;
   shipping_country: string;
@@ -85,10 +93,13 @@ function toStored(row: OrderRow, lines: LineRow[]): StoredOrder {
     email: row.email,
     name: row.name,
     company: row.company || undefined,
+    taxNumber: row.tax_number || undefined,
+    hrb: row.hrb || undefined,
     note: row.note || undefined,
     promoCode: row.promo_code || undefined,
     shipping: {
-      countryCode: "DE",
+      countryCode: (row.shipping_country || "DE").trim().toUpperCase(),
+      countryLabel: europeShippingCountryLabel(row.shipping_country || "DE"),
       bundeslandCode: row.shipping_bundesland_code,
       bundeslandLabel: row.shipping_bundesland_label,
       streetLine1: row.shipping_street_line1,
@@ -127,6 +138,8 @@ export async function saveOrder(order: StoredOrder): Promise<void> {
       email: order.email,
       name: order.name,
       company: order.company ?? null,
+      tax_number: order.taxNumber ?? null,
+      hrb: order.hrb ?? null,
       note: order.note ?? null,
       promo_code: order.promoCode ?? null,
       shipping_country: order.shipping.countryCode,

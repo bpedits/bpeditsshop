@@ -3,91 +3,92 @@
     "sku": "LCAR-10V",
     "name": "L-Carnatine",
     "pack": "10 vials",
-    "eur": 33,
+    "eur": 39.99,
     "category": "Peptide RUO"
   },
   {
     "sku": "SLUPP332-5MG",
     "name": "Slupp 332 5mg",
     "pack": "5mg × 10 vials",
-    "eur": 45,
+    "eur": 49.99,
     "category": "Peptide RUO"
   },
   {
     "sku": "IGF-1",
     "name": "IGF-1 LR3",
     "pack": "1mg × 10 vials",
-    "eur": 103,
+    "eur": 82.99,
     "category": "Peptide RUO"
   },
   {
     "sku": "MS10",
     "name": "MOTS-c",
     "pack": "10mg × 10 vials",
-    "eur": 33,
+    "eur": 56.99,
     "category": "Peptide RUO"
   },
   {
     "sku": "MS40",
     "name": "MOTS-c",
     "pack": "40mg × 10 vials",
-    "eur": 96,
+    "eur": 165.79,
     "category": "Peptide RUO"
   },
   {
     "sku": "MT2",
     "name": "MT-2",
     "pack": "10mg × 10 vials",
-    "eur": 26,
+    "eur": 28.99,
     "category": "Peptide RUO"
   },
   {
     "sku": "ET10",
     "name": "Epithalon",
     "pack": "10mg × 10 vials",
-    "eur": 23,
+    "eur": 35.99,
     "category": "Peptide RUO"
   },
   {
     "sku": "ET50",
     "name": "Epithalon",
     "pack": "50mg × 10 vials",
-    "eur": 69,
+    "eur": 107.97,
     "category": "Peptide RUO"
   },
   {
     "sku": "PT41",
-    "name": "PT141",
+    "name": "PT-141",
     "pack": "10mg × 10 vials",
-    "eur": 32,
-    "category": "Peptide RUO"
+    "eur": 30.99,
+    "category": "Peptide RUO",
+    "slug": "pt141"
   },
   {
     "sku": "SK5",
     "name": "Selank",
     "pack": "5mg × 10 vials",
-    "eur": 28,
+    "eur": 26.99,
     "category": "Peptide RUO"
   },
   {
     "sku": "SK10",
     "name": "Selank",
     "pack": "10mg × 10 vials",
-    "eur": 45,
+    "eur": 43.38,
     "category": "Peptide RUO"
   },
   {
     "sku": "XA5",
     "name": "Semax",
     "pack": "5mg × 10 vials",
-    "eur": 23,
+    "eur": 26.99,
     "category": "Peptide RUO"
   },
   {
     "sku": "XA10",
     "name": "Semax",
     "pack": "10mg × 10 vials",
-    "eur": 33,
+    "eur": 38.72,
     "category": "Peptide RUO"
   },
   {
@@ -108,323 +109,327 @@
     "sku": "IP10",
     "name": "Ipamorelin",
     "pack": "10mg × 10 vials",
-    "eur": 32,
+    "eur": 25.99,
     "category": "Peptide RUO"
   },
   {
     "sku": "MAZ5",
     "name": "Mazdutide",
     "pack": "5mg × 10 vials",
-    "eur": 46,
+    "eur": 59.99,
     "category": "Peptide RUO"
   },
   {
     "sku": "MAZ10",
     "name": "Mazdutide",
     "pack": "10mg × 10 vials",
-    "eur": 86,
+    "eur": 112.16,
     "category": "Peptide RUO"
   },
   {
     "sku": "SUR5",
     "name": "Survodutide",
     "pack": "5mg × 10 vials",
-    "eur": 80,
+    "eur": 69.99,
     "category": "Peptide RUO"
   },
   {
     "sku": "SUR10",
     "name": "Survodutide",
     "pack": "10mg × 10 vials",
-    "eur": 149,
+    "eur": 130.36,
     "category": "Peptide RUO"
   },
   {
     "sku": "AP5",
     "name": "Adipotide",
     "pack": "5mg × 10 vials",
-    "eur": 69,
+    "eur": 39.99,
     "category": "Peptide RUO"
   },
   {
     "sku": "LL375",
-    "name": "LL37",
+    "name": "LL-37",
     "pack": "5mg × 10 vials",
-    "eur": 40,
-    "category": "Peptide RUO"
+    "eur": 43.99,
+    "category": "Peptide RUO",
+    "slug": "ll37"
   },
   {
     "sku": "RA10",
     "name": "Ara-290",
     "pack": "10mg × 10 vials",
-    "eur": 38,
+    "eur": 44.99,
     "category": "Peptide RUO"
   },
   {
     "sku": "NP810",
-    "name": "snap-8",
+    "name": "Snap-8",
     "pack": "10mg × 10 vials",
-    "eur": 25,
+    "eur": 29.99,
     "category": "Peptide RUO"
   },
   {
     "sku": "5AM",
     "name": "5-amino-1mq",
     "pack": "5mg × 10 vials",
-    "eur": 30,
+    "eur": 34.99,
     "category": "Peptide RUO"
   },
   {
     "sku": "AR50",
     "name": "AICAR",
     "pack": "50mg × 10 vials",
-    "eur": 31,
+    "eur": 39.99,
     "category": "Peptide RUO"
   },
   {
     "sku": "BPC5",
-    "name": "BPC",
+    "name": "BPC-157",
     "pack": "5mg × 10 vials",
-    "eur": 21,
-    "category": "Peptide RUO"
+    "eur": 42.99,
+    "category": "Peptide RUO",
+    "slug": "bpc"
   },
   {
     "sku": "BPC10",
-    "name": "BPC",
+    "name": "BPC-157",
     "pack": "10mg × 10 vials",
-    "eur": 32,
-    "category": "Peptide RUO"
+    "eur": 65.51,
+    "category": "Peptide RUO",
+    "slug": "bpc"
   },
   {
     "sku": "TB5",
-    "name": "TB",
+    "name": "TB-500",
     "pack": "5mg × 10 vials",
-    "eur": 38,
-    "category": "Peptide RUO"
+    "eur": 68.99,
+    "category": "Peptide RUO",
+    "slug": "tb"
   },
   {
     "sku": "TB10",
-    "name": "TB",
+    "name": "TB-500",
     "pack": "10mg × 10 vials",
-    "eur": 69,
-    "category": "Peptide RUO"
+    "eur": 125.27,
+    "category": "Peptide RUO",
+    "slug": "tb"
   },
   {
     "sku": "BPTB10",
     "name": "BPC 5mg + TB",
     "pack": "10mg × 10 vials",
-    "eur": 46,
+    "eur": 69.99,
     "category": "Peptide-Blend RUO"
   },
   {
     "sku": "BPTB20",
     "name": "BPC 10mg + TB",
     "pack": "20mg × 10 vials",
-    "eur": 86,
+    "eur": 130.85,
     "category": "Peptide-Blend RUO"
   },
   {
     "sku": "BBG70",
     "name": "GLOW",
     "pack": "70mg × 10 vials",
-    "eur": 92,
+    "eur": 119.99,
     "category": "Peptide-Blend RUO"
   },
   {
     "sku": "KLOW80",
     "name": "KLOW",
     "pack": "80mg × 10 vials",
-    "eur": 103,
+    "eur": 129.99,
     "category": "Peptide-Blend RUO"
   },
   {
     "sku": "BPC/CU70",
     "name": "BPC10+CU70",
     "pack": "80mg × 10 vials",
-    "eur": 34,
+    "eur": 44.99,
     "category": "Peptide-Blend RUO"
   },
   {
     "sku": "CJIP10",
     "name": "CJC5+IPA5",
     "pack": "10mg × 10 vials",
-    "eur": 40,
+    "eur": 49.99,
     "category": "Peptide-Blend RUO"
   },
   {
     "sku": "CJIP20",
     "name": "CJC10+IPA10",
     "pack": "20mg × 10 vials",
-    "eur": 70,
+    "eur": 79.99,
     "category": "Peptide-Blend RUO"
   },
   {
     "sku": "SESE10",
     "name": "Selan5+Semax5",
     "pack": "10mg × 10 vials",
-    "eur": 28,
+    "eur": 49.99,
     "category": "Peptide-Blend RUO"
   },
   {
     "sku": "TEIP10",
     "name": "Tesa5+Ipa5",
     "pack": "10mg × 10 vials",
-    "eur": 50,
+    "eur": 59.99,
     "category": "Peptide-Blend RUO"
   },
   {
     "sku": "TEIP20",
     "name": "Tesa10+Ipa10",
     "pack": "20mg × 10 vials",
-    "eur": 85,
+    "eur": 89.99,
     "category": "Peptide-Blend RUO"
   },
   {
     "sku": "N1000",
     "name": "NAD+",
     "pack": "1000mg × 10 vials",
-    "eur": 38,
+    "eur": 55.72,
     "category": "Cofaktoren RUO"
   },
   {
     "sku": "N500",
     "name": "NAD+",
     "pack": "500mg × 10 vials",
-    "eur": 30,
+    "eur": 43.99,
     "category": "Cofaktoren RUO"
   },
   {
     "sku": "CU50",
     "name": "GHK-CU",
     "pack": "50mg × 10 vials",
-    "eur": 18,
+    "eur": 53.99,
     "category": "Peptide RUO"
   },
   {
     "sku": "CU100",
     "name": "GHK-CU",
     "pack": "100mg × 10 vials",
-    "eur": 23,
+    "eur": 68.99,
     "category": "Peptide RUO"
   },
   {
     "sku": "KS5",
     "name": "KissPeptin-10",
     "pack": "5mg × 10 vials",
-    "eur": 23,
+    "eur": 65.99,
     "category": "Peptide RUO"
   },
   {
     "sku": "KS10",
     "name": "KissPeptin-10",
     "pack": "10mg × 10 vials",
-    "eur": 43,
+    "eur": 123.37,
     "category": "Peptide RUO"
   },
   {
     "sku": "GT1200",
     "name": "Glutathione",
     "pack": "1200mg × 10",
-    "eur": 25,
+    "eur": 39.05,
     "category": "Cofaktoren RUO"
   },
   {
     "sku": "GT600",
     "name": "Glutathione",
     "pack": "600mg × 10",
-    "eur": 16,
+    "eur": 24.99,
     "category": "Cofaktoren RUO"
   },
   {
     "sku": "DS10",
     "name": "DSIP",
     "pack": "10mg × 10 vials",
-    "eur": 40,
+    "eur": 28.99,
     "category": "Peptide RUO"
   },
   {
     "sku": "KPV10",
     "name": "KPV",
     "pack": "10mg × 10 vials",
-    "eur": 34,
+    "eur": 39.99,
     "category": "Peptide RUO"
   },
   {
     "sku": "2S10",
     "name": "SS-31",
     "pack": "10mg × 10 vials",
-    "eur": 38,
+    "eur": 54.99,
     "category": "Peptide RUO"
   },
   {
     "sku": "2S50",
     "name": "SS-31",
     "pack": "50mg × 10 vials",
-    "eur": 115,
+    "eur": 166.42,
     "category": "Peptide RUO"
   },
   {
     "sku": "CND5",
-    "name": "CJC NO DAC",
+    "name": "CJC-1295 No DAC",
     "pack": "5mg × 10 vials",
-    "eur": 45,
-    "category": "Peptide RUO"
+    "eur": 59.99,
+    "category": "Peptide RUO",
+    "slug": "cjc-no-dac"
   },
   {
     "sku": "CND10",
-    "name": "CJC NO DAC",
+    "name": "CJC-1295 No DAC",
     "pack": "10mg × 10 vials",
-    "eur": 78,
-    "category": "Peptide RUO"
-  },
-  {
-    "sku": "CP10",
-    "name": "CJC No DAC 5mg",
-    "pack": "10mg × 10 vials",
-    "eur": 48,
-    "category": "Peptide RUO"
+    "eur": 103.98,
+    "category": "Peptide RUO",
+    "slug": "cjc-no-dac"
   },
   {
     "sku": "CD5",
-    "name": "CJC+ DAC",
+    "name": "CJC-1295 DAC",
     "pack": "5mg × 10 vials",
-    "eur": 78,
-    "category": "Peptide RUO"
+    "eur": 45.99,
+    "category": "Peptide RUO",
+    "slug": "cjc-dac"
   },
   {
     "sku": "AOD5",
-    "name": "AOD",
+    "name": "AOD 9604",
     "pack": "5mg × 10 vials",
-    "eur": 45,
-    "category": "Peptide RUO"
+    "eur": 65.99,
+    "category": "Peptide RUO",
+    "slug": "aod"
   },
   {
     "sku": "AOD10",
-    "name": "AOD",
+    "name": "AOD 9604",
     "pack": "10mg × 10 vials",
-    "eur": 60,
-    "category": "Peptide RUO"
+    "eur": 87.99,
+    "category": "Peptide RUO",
+    "slug": "aod"
   },
   {
     "sku": "LC526",
     "name": "Lipo-c526",
     "pack": "10ml × 10 vials",
-    "eur": 43,
+    "eur": 49.99,
     "category": "Lösungen & Gebinde RUO"
   },
   {
     "sku": "LC216",
     "name": "Lipo-c216",
     "pack": "10ml × 10 vials",
-    "eur": 48,
+    "eur": 54.99,
     "category": "Lösungen & Gebinde RUO"
   },
   {
     "sku": "LEMON",
-    "name": "lemon bottle",
+    "name": "Lemon Bottle",
     "pack": "10ml × 10 vials",
     "eur": 30,
-    "category": "Lösungen & Gebinde RUO"
+    "category": "Lösungen & Gebinde RUO",
+    "slug": "lemon-bottle"
   },
   {
     "sku": "BAC3",
@@ -458,210 +463,210 @@
     "sku": "S5",
     "name": "Semaglutide",
     "pack": "5mg × 10 vials",
-    "eur": 16,
+    "eur": 24.99,
     "category": "Incretin-Analog RUO"
   },
   {
     "sku": "S10",
     "name": "Semaglutide",
     "pack": "10mg × 10 vials",
-    "eur": 20,
+    "eur": 31.24,
     "category": "Incretin-Analog RUO"
   },
   {
     "sku": "S15",
     "name": "Semaglutide",
     "pack": "15mg × 10 vials",
-    "eur": 25,
+    "eur": 39.05,
     "category": "Incretin-Analog RUO"
   },
   {
     "sku": "S20",
     "name": "Semaglutide",
     "pack": "20mg × 10 vials",
-    "eur": 30,
+    "eur": 46.86,
     "category": "Incretin-Analog RUO"
   },
   {
     "sku": "S30",
     "name": "Semaglutide",
     "pack": "30mg × 10 vials",
-    "eur": 40,
+    "eur": 62.48,
     "category": "Incretin-Analog RUO"
   },
   {
     "sku": "T5",
     "name": "Tirzepatide",
     "pack": "5mg × 10 vials",
-    "eur": 15,
+    "eur": 19.99,
     "category": "Incretin-Analog RUO"
   },
   {
     "sku": "T10",
     "name": "Tirzepatide",
     "pack": "10mg × 10 vials",
-    "eur": 20,
+    "eur": 26.65,
     "category": "Incretin-Analog RUO"
   },
   {
     "sku": "T15",
     "name": "Tirzepatide",
     "pack": "15mg × 10 vials",
-    "eur": 25,
+    "eur": 33.32,
     "category": "Incretin-Analog RUO"
   },
   {
     "sku": "T20",
     "name": "Tirzepatide",
     "pack": "20mg × 10 vials",
-    "eur": 30,
+    "eur": 39.98,
     "category": "Incretin-Analog RUO"
   },
   {
     "sku": "T30",
     "name": "Tirzepatide",
     "pack": "30mg × 10 vials",
-    "eur": 40,
+    "eur": 53.31,
     "category": "Incretin-Analog RUO"
   },
   {
     "sku": "T40",
     "name": "Tirzepatide",
     "pack": "40mg × 10 vials",
-    "eur": 50,
+    "eur": 66.63,
     "category": "Incretin-Analog RUO"
   },
   {
     "sku": "T50",
     "name": "Tirzepatide",
     "pack": "50mg × 10 vials",
-    "eur": 60,
+    "eur": 79.96,
     "category": "Incretin-Analog RUO"
   },
   {
     "sku": "T60",
     "name": "Tirzepatide",
     "pack": "60mg × 10 vials",
-    "eur": 75,
+    "eur": 99.95,
     "category": "Incretin-Analog RUO"
   },
   {
     "sku": "R5",
     "name": "Retatrutide",
     "pack": "5mg × 10 vials",
-    "eur": 28,
+    "eur": 34.99,
     "category": "Incretin-Analog RUO"
   },
   {
     "sku": "R10",
     "name": "Retatrutide",
     "pack": "10mg × 10 vials",
-    "eur": 40,
+    "eur": 49.99,
     "category": "Incretin-Analog RUO"
   },
   {
     "sku": "R15",
     "name": "Retatrutide",
     "pack": "15mg × 10 vials",
-    "eur": 50,
+    "eur": 62.48,
     "category": "Incretin-Analog RUO"
   },
   {
     "sku": "R20",
     "name": "Retatrutide",
     "pack": "20mg × 10 vials",
-    "eur": 60,
+    "eur": 74.98,
     "category": "Incretin-Analog RUO"
   },
   {
     "sku": "R30",
     "name": "Retatrutide",
     "pack": "30mg × 10 vials",
-    "eur": 109,
+    "eur": 136.21,
     "category": "Incretin-Analog RUO"
   },
   {
     "sku": "R40",
     "name": "Retatrutide",
     "pack": "40mg × 10 vials",
-    "eur": 143,
+    "eur": 178.7,
     "category": "Incretin-Analog RUO"
   },
   {
     "sku": "R50",
     "name": "Retatrutide",
     "pack": "50mg × 10 vials",
-    "eur": 166,
+    "eur": 207.44,
     "category": "Incretin-Analog RUO"
   },
   {
     "sku": "R60",
     "name": "Retatrutide",
     "pack": "60mg × 10 vials",
-    "eur": 195,
+    "eur": 243.68,
     "category": "Incretin-Analog RUO"
   },
   {
     "sku": "CAG5",
     "name": "Cagrilintide",
     "pack": "5mg × 10 vials",
-    "eur": 43,
+    "eur": 49.99,
     "category": "Incretin-Analog RUO"
   },
   {
     "sku": "CAG10",
     "name": "Cagrilintide",
     "pack": "10mg × 10 vials",
-    "eur": 70,
+    "eur": 81.38,
     "category": "Incretin-Analog RUO"
   },
   {
     "sku": "ADM5",
     "name": "ADM5",
     "pack": "5mg × 10 vials",
-    "eur": 58,
+    "eur": 69.99,
     "category": "Incretin-Analog RUO"
   },
   {
     "sku": "CS10",
     "name": "CAG5 + S5",
     "pack": "10mg × 10 vials",
-    "eur": 55,
+    "eur": 69.99,
     "category": "Incretin-Blend RUO"
   },
   {
     "sku": "CS20",
     "name": "CAG10 + S10",
     "pack": "20mg × 10 vials",
-    "eur": 85,
+    "eur": 99.99,
     "category": "Incretin-Blend RUO"
   },
   {
     "sku": "CATZ10",
     "name": "CAG5 + T5",
     "pack": "10mg × 10 vials",
-    "eur": 55,
+    "eur": 69.99,
     "category": "Incretin-Blend RUO"
   },
   {
     "sku": "CATZ20",
     "name": "CAG10 + T10",
     "pack": "20mg × 10 vials",
-    "eur": 85,
+    "eur": 99.99,
     "category": "Incretin-Blend RUO"
   },
   {
     "sku": "CR10",
     "name": "CAG5 + R5",
     "pack": "10mg × 10 vials",
-    "eur": 60,
+    "eur": 69.99,
     "category": "Incretin-Blend RUO"
   },
   {
     "sku": "CR20",
     "name": "CAG10 + R10",
     "pack": "20mg × 10 vials",
-    "eur": 95,
+    "eur": 99.99,
     "category": "Incretin-Blend RUO"
   }
 ]

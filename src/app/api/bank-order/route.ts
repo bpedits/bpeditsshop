@@ -5,14 +5,14 @@ import { cartTotalEur, validateCartForPayment } from "@/lib/checkout-validate";
 import { defaultFromAddress, isMailerConfigured, sendMail } from "@/lib/mailer";
 import { saveOrder, type StoredOrder } from "@/lib/order-store";
 import { formatReferenceEur } from "@/lib/reference-price";
-import { DE_BUNDESLAND_OPTIONS, parseShippingAddress } from "@/lib/shipping-address";
+import { parseShippingAddress } from "@/lib/shipping-address";
 import {
   buildCustomerOrderEmailHtml,
   buildTeamOrderEmailHtml,
 } from "@/lib/order-email-content";
 import { randomBytes } from "node:crypto";
 
-const MAX = { name: 200, company: 200, note: 4000, promo: 64 };
+const MAX = { name: 200, company: 200, taxNumber: 80, hrb: 80, note: 4000, promo: 64 };
 
 function validEmail(s: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
@@ -68,6 +68,8 @@ export async function POST(req: Request) {
   const email = clip(String(o.email ?? ""), 320);
   const name = clip(String(o.name ?? ""), MAX.name);
   const company = clip(String(o.company ?? ""), MAX.company);
+  const taxNumber = clip(String(o.taxNumber ?? ""), MAX.taxNumber);
+  const hrb = clip(String(o.hrb ?? ""), MAX.hrb);
   const note = clip(String(o.note ?? ""), MAX.note);
   const promoCode = clip(String(o.promoCode ?? ""), MAX.promo);
 
@@ -115,22 +117,21 @@ export async function POST(req: Request) {
   }
   const siteUrl = resolveSiteUrl();
 
-  const bundeslandLabel =
-    DE_BUNDESLAND_OPTIONS.find((b) => b.code === shipping.bundeslandCode)?.label ||
-    shipping.bundeslandCode;
-
   const order: StoredOrder = {
     orderRef,
     createdAtIso: new Date().toISOString(),
     email,
     name,
     company: company || undefined,
+    taxNumber: taxNumber || undefined,
+    hrb: hrb || undefined,
     note: note || undefined,
     promoCode: promoCode || undefined,
     shipping: {
-      countryCode: "DE",
+      countryCode: shipping.countryCode,
+      countryLabel: shipping.countryLabel,
       bundeslandCode: shipping.bundeslandCode,
-      bundeslandLabel,
+      bundeslandLabel: shipping.bundeslandLabel,
       streetLine1: shipping.streetLine1,
       streetLine2: shipping.streetLine2 || undefined,
       postalCode: shipping.postalCode,

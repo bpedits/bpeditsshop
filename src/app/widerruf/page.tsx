@@ -1,16 +1,28 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { brand } from "@/lib/brand";
 import { LegalDisclaimer } from "@/components/legal-disclaimer";
 import { LegalProse } from "@/components/legal-prose";
+import { LegalSectionCard } from "@/components/legal-section-card";
 
 export const metadata: Metadata = {
   title: "Widerrufsrecht",
+  description: `Widerrufsbelehrung und Hinweise zur Rücksendung bei ${brand.name}.`,
 };
 
 export default function WiderrufPage() {
   return (
     <LegalProse title="Widerrufsbelehrung & Widerrufsformular">
       <LegalDisclaimer />
+      <p>
+        Die folgenden Informationen richten sich an <strong>Verbraucher</strong> im Sinne des Gesetzes, denen ein
+        Widerrufsrecht zusteht. Ergänzend gelten unsere{" "}
+        <Link href="/agb" className="font-medium text-tint underline">
+          AGB
+        </Link>{" "}
+        (insbesondere zu Rücksendung und Eingangsprüfung, siehe dort <strong>§ 6</strong>).
+      </p>
+
       <h2>Widerrufsrecht</h2>
       <p>
         Sie haben das Recht, binnen vierzehn Tagen ohne Angabe von Gründen diesen Vertrag zu widerrufen. Die
@@ -27,6 +39,7 @@ export default function WiderrufPage() {
         Zur Wahrung der Widerrufsfrist reicht es aus, dass die Mitteilung über die Ausübung des Widerrufsrechts vor
         Ablauf der Widerrufsfrist abgesendet wird.
       </p>
+
       <h2>Folgen des Widerrufs</h2>
       <p>
         Wenn Sie diesen Vertrag widerrufen, haben wir Ihnen alle Zahlungen, die wir von Ihnen erhalten haben,
@@ -46,6 +59,30 @@ export default function WiderrufPage() {
         wenn Sie die Waren vor Ablauf der Frist von vierzehn Tagen absenden.
       </p>
       <p>Sie tragen die unmittelbaren Kosten der Rücksendung der Waren.</p>
+
+      <div className="not-prose mt-4 space-y-4">
+        <LegalSectionCard title="Rücksendung und Prüfung vor Auszahlung" id="widerruf-pruefung">
+          <p>
+            Unabhängig von den gesetzlichen Fristen bearbeiten wir Rücksendungen sachgerecht: Nach{" "}
+            <strong>Eingang der Ware</strong> führen wir eine <strong>Eingangsprüfung</strong> durch (u.&nbsp;a.
+            Vollständigkeit, Übereinstimmung mit der Bestellung, unversehrte Versiegelung/Originalverpackung, Kennzeichnung).
+          </p>
+          <p>
+            Eine <strong>verifizierte Rückerstattung</strong> setzt voraus, dass die Prüfung ohne Beanstandung abgeschlossen
+            werden kann. Liegen gesetzliche oder sachliche Gründe vor, die einer vollen Erstattung entgegenstehen (z.&nbsp;B.
+            Verletzung der Rücknahmevoraussetzungen, erkennbare Manipulation, gesundheitlich bedenkliche Öffnung
+            versiegelter Ware), teilen wir Ihnen das Ergebnis in Textform mit; gesetzliche Ansprüche bleiben unberührt.
+          </p>
+          <p>
+            Details zu Anmeldung, Adresse und weiteren Voraussetzungen finden Sie in den{" "}
+            <Link href="/agb#agb-eingangspruefung" className="font-medium text-tint underline">
+              AGB (§ 6, Eingangsprüfung)
+            </Link>
+            .
+          </p>
+        </LegalSectionCard>
+      </div>
+
       <h2>Widerrufsformular</h2>
       <p>Wenn Sie den Vertrag widerrufen wollen, füllen Sie bitte dieses Formular aus und senden Sie es zurück.</p>
       <p>
@@ -61,6 +98,7 @@ export default function WiderrufPage() {
       <p>Unterschrift des/der Verbraucher(s) (nur bei Mitteilung auf Papier): _________________________</p>
       <p>Datum: _________________________</p>
       <p>(*) Unzutreffendes streichen.</p>
+
       <h2>Vorzeitiges Erlöschen des Widerrufsrechts</h2>
       <p>
         Das Widerrufsrecht kann bei Waren, die schnell verderben oder deren Verfallsdatum schnell überschritten wäre,

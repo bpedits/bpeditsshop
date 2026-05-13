@@ -560,15 +560,15 @@ function TopCustomersCard({ rows }: { rows: TopCustomerRow[] }) {
 }
 
 // ---------------------------------------------------------------------------
-// Bundesländer
+// Regionen / Länder
 // ---------------------------------------------------------------------------
 
 function TopRegionsCard({ rows }: { rows: RegionRow[] }) {
   const max = Math.max(1, ...rows.map((r) => r.revenue));
   return (
     <div className="rounded-xl border border-black/[0.08] bg-white p-4 shadow-sm sm:p-5">
-      <h2 className="text-[15px] font-semibold text-foreground">Top Bundesländer</h2>
-      <p className="text-[12px] text-muted">Nach Versandadresse, Lifetime.</p>
+      <h2 className="text-[15px] font-semibold text-foreground">Top Regionen / Länder</h2>
+      <p className="text-[12px] text-muted">Nach Versandadresse (DE: Bundesland; sonst Land), Lifetime.</p>
       {rows.length === 0 ? (
         <p className="mt-6 text-center text-[13px] text-muted">Noch keine Daten.</p>
       ) : (

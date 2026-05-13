@@ -337,20 +337,27 @@ export function computeDashboardStats(
     .sort((a, b) => b.revenue - a.revenue || b.count - a.count)
     .slice(0, 10);
 
-  // --- Top Bundesländer ----------------------------------------------------
+  // --- Top Regionen / Länder (DE: Bundesland; sonst Land + ggf. Region) -----
   const regionMap = new Map<string, RegionRow>();
   for (const o of orders) {
-    const code = (o.shipping?.bundeslandCode || "??").toUpperCase();
+    const cc = (o.shipping?.countryCode || "DE").toUpperCase();
+    const isDe = cc === "DE";
+    const key = isDe ? (o.shipping?.bundeslandCode || "??").toUpperCase() : cc;
+    const label = isDe
+      ? o.shipping?.bundeslandLabel || key
+      : o.shipping?.bundeslandLabel
+        ? `${o.shipping.bundeslandLabel} (${o.shipping.countryLabel})`
+        : o.shipping?.countryLabel || key;
     const exist =
-      regionMap.get(code) ?? {
-        code,
-        label: o.shipping?.bundeslandLabel || code,
+      regionMap.get(key) ?? {
+        code: key,
+        label,
         count: 0,
         revenue: 0,
       };
     exist.count += 1;
     exist.revenue += o.totalEur;
-    regionMap.set(code, exist);
+    regionMap.set(key, exist);
   }
   const topRegions = [...regionMap.values()]
     .sort((a, b) => b.revenue - a.revenue || b.count - a.count)

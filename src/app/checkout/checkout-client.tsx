@@ -20,7 +20,7 @@ import { CheckoutRuoDialog } from "@/components/checkout-ruo-dialog";
 import { ProductCard } from "@/components/product-card";
 import { QuantityStepper } from "@/components/quantity-stepper";
 import { formatReferenceEur } from "@/lib/reference-price";
-import { DE_BUNDESLAND_OPTIONS, parseShippingAddress } from "@/lib/shipping-address";
+import { DE_BUNDESLAND_OPTIONS, EUROPE_SHIPPING_COUNTRY_OPTIONS, parseShippingAddress } from "@/lib/shipping-address";
 
 function productTouchesCartSkus(product: Product, cartSkus: Set<string>): boolean {
   return product.variants.some((v) => cartSkus.has(v.sku.toUpperCase()));
@@ -139,8 +139,12 @@ export function CheckoutClient() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [company, setCompany] = useState("");
+  const [taxNumber, setTaxNumber] = useState("");
+  const [hrb, setHrb] = useState("");
   const [note, setNote] = useState("");
+  const [countryCode, setCountryCode] = useState("DE");
   const [bundeslandCode, setBundeslandCode] = useState("");
+  const [regionOther, setRegionOther] = useState("");
   const [streetLine1, setStreetLine1] = useState("");
   const [streetLine2, setStreetLine2] = useState("");
   const [postalCode, setPostalCode] = useState("");
@@ -153,14 +157,24 @@ export function CheckoutClient() {
 
     const emailT = email.trim();
     const nameT = `${firstName.trim()} ${lastName.trim()}`.trim();
-    const shippingPayload = {
-      countryCode: "DE" as const,
-      bundeslandCode: bundeslandCode.trim(),
-      postalCode: postalCode.trim(),
-      city: city.trim(),
-      streetLine1: streetLine1.trim(),
-      streetLine2: streetLine2.trim(),
-    };
+    const shippingPayload =
+      countryCode.trim().toUpperCase() === "DE"
+        ? {
+            countryCode: "DE" as const,
+            bundeslandCode: bundeslandCode.trim(),
+            postalCode: postalCode.trim(),
+            city: city.trim(),
+            streetLine1: streetLine1.trim(),
+            streetLine2: streetLine2.trim(),
+          }
+        : {
+            countryCode: countryCode.trim().toUpperCase(),
+            region: regionOther.trim(),
+            postalCode: postalCode.trim(),
+            city: city.trim(),
+            streetLine1: streetLine1.trim(),
+            streetLine2: streetLine2.trim(),
+          };
 
     if (!emailT || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailT)) {
       setError("Bitte eine gültige E-Mail-Adresse eingeben.");
@@ -186,6 +200,8 @@ export function CheckoutClient() {
           email: emailT,
           name: nameT,
           company: company.trim(),
+          taxNumber: taxNumber.trim(),
+          hrb: hrb.trim(),
           note: note.trim(),
           promoCode: promo,
           shipping: shippingPayload,
@@ -214,8 +230,12 @@ export function CheckoutClient() {
     firstName,
     lastName,
     company,
+    taxNumber,
+    hrb,
     note,
+    countryCode,
     bundeslandCode,
+    regionOther,
     streetLine1,
     streetLine2,
     postalCode,
@@ -281,14 +301,6 @@ export function CheckoutClient() {
           }}
           className="mt-6 space-y-4 rounded-xl border border-black/[0.07] bg-gradient-to-br from-tint/[0.05] via-white to-surface-pearl/40 px-4 py-4 sm:px-5 sm:py-5"
         >
-          {/* Hilft Autofill (iOS/Chrome) zu erkennen, dass es eine deutsche Versandadresse ist */}
-          <input
-            type="hidden"
-            name="shipping country"
-            value="DE"
-            autoComplete="shipping country"
-            readOnly
-          />
           <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted">
@@ -367,6 +379,36 @@ export function CheckoutClient() {
                 placeholder="optional"
               />
             </label>
+            <label className="block">
+              <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted">Steuernummer (optional)</span>
+              <input
+                type="text"
+                name="tax-number"
+                value={taxNumber}
+                onChange={(e) => setTaxNumber(e.target.value)}
+                autoComplete="off"
+                autoCapitalize="characters"
+                spellCheck={false}
+                enterKeyHint="next"
+                className="mt-1.5 h-11 w-full rounded-lg border border-black/[0.12] bg-white px-3 text-[14px] text-foreground outline-none ring-tint focus:ring-2"
+                placeholder="falls zutreffend"
+              />
+            </label>
+            <label className="block">
+              <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted">HRB (optional)</span>
+              <input
+                type="text"
+                name="hrb"
+                value={hrb}
+                onChange={(e) => setHrb(e.target.value)}
+                autoComplete="off"
+                autoCapitalize="characters"
+                spellCheck={false}
+                enterKeyHint="next"
+                className="mt-1.5 h-11 w-full rounded-lg border border-black/[0.12] bg-white px-3 text-[14px] text-foreground outline-none ring-tint focus:ring-2"
+                placeholder="Handelsregister, z. B. HRB …"
+              />
+            </label>
           </div>
 
           <fieldset className="rounded-xl border border-black/[0.08] bg-white/80 px-3 py-3 sm:px-4 sm:py-4">
@@ -374,35 +416,73 @@ export function CheckoutClient() {
               Lieferadresse (Pflicht)
             </legend>
             <p className="mt-1 text-[12px] leading-relaxed text-muted">
-              Lieferung nur <strong className="font-medium text-foreground">innerhalb Deutschlands</strong>. Bitte
-              Bundesland und vollständige Anschrift angeben — so wie bei einer normalen deutschen Lieferadresse.
+              Lieferung in die <strong className="font-medium text-foreground">europäischen Länder</strong>, die in der
+              Liste stehen. Bitte Land und vollständige Anschrift angeben — bei Deutschland zusätzlich das Bundesland.
             </p>
-
-            <div className="mt-3 rounded-lg border border-black/[0.08] bg-white px-3 py-2.5 text-[13px] text-foreground">
-              <span className="text-muted">Lieferland:</span>{" "}
-              <span className="font-semibold">Deutschland</span>
-            </div>
 
             <div className="mt-3 grid gap-3 sm:grid-cols-2">
               <label className="block sm:col-span-2">
-                <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted">Bundesland (Pflicht)</span>
+                <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted">Lieferland (Pflicht)</span>
                 <select
-                  name="address-level1"
-                  value={bundeslandCode}
-                  onChange={(e) => setBundeslandCode(e.target.value)}
+                  name="shipping-country"
+                  value={countryCode}
+                  onChange={(e) => {
+                    setCountryCode(e.target.value);
+                    setBundeslandCode("");
+                    setRegionOther("");
+                  }}
                   className="mt-1.5 h-11 w-full rounded-lg border border-black/[0.12] bg-white px-3 text-[14px] text-foreground outline-none ring-tint focus:ring-2"
-                  autoComplete="shipping address-level1"
+                  autoComplete="shipping country"
                   required
                   aria-required="true"
                 >
-                  <option value="">Bitte wählen …</option>
-                  {DE_BUNDESLAND_OPTIONS.map((b) => (
-                    <option key={b.code} value={b.code}>
-                      {b.label}
+                  {EUROPE_SHIPPING_COUNTRY_OPTIONS.map((c) => (
+                    <option key={c.code} value={c.code}>
+                      {c.label}
                     </option>
                   ))}
                 </select>
               </label>
+              {countryCode === "DE" ? (
+                <label className="block sm:col-span-2">
+                  <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted">
+                    Bundesland (Pflicht)
+                  </span>
+                  <select
+                    name="address-level1"
+                    value={bundeslandCode}
+                    onChange={(e) => setBundeslandCode(e.target.value)}
+                    className="mt-1.5 h-11 w-full rounded-lg border border-black/[0.12] bg-white px-3 text-[14px] text-foreground outline-none ring-tint focus:ring-2"
+                    autoComplete="shipping address-level1"
+                    required
+                    aria-required="true"
+                  >
+                    <option value="">Bitte wählen …</option>
+                    {DE_BUNDESLAND_OPTIONS.map((b) => (
+                      <option key={b.code} value={b.code}>
+                        {b.label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              ) : (
+                <label className="block sm:col-span-2">
+                  <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted">
+                    Region / Kanton / Provinz (optional)
+                  </span>
+                  <input
+                    type="text"
+                    name="shipping-region"
+                    value={regionOther}
+                    onChange={(e) => setRegionOther(e.target.value)}
+                    autoComplete="shipping address-level1"
+                    autoCapitalize="words"
+                    enterKeyHint="next"
+                    className="mt-1.5 h-11 w-full rounded-lg border border-black/[0.12] bg-white px-3 text-[14px] text-foreground outline-none ring-tint focus:ring-2"
+                    placeholder="falls auf dem Paket nötig"
+                  />
+                </label>
+              )}
               <label className="block sm:col-span-2">
                 <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted">Straße, Hausnummer</span>
                 <input
@@ -436,21 +516,30 @@ export function CheckoutClient() {
                 />
               </label>
               <label className="block">
-                <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted">PLZ</span>
+                <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted">
+                  {countryCode === "DE" ? "PLZ" : "PLZ / Postcode"}
+                </span>
                 <input
                   type="text"
                   name="postal-code"
                   value={postalCode}
-                  onChange={(e) => setPostalCode(e.target.value.replace(/\D/g, "").slice(0, 5))}
+                  onChange={(e) => {
+                    const v = e.target.value;
+                    if (countryCode === "DE") {
+                      setPostalCode(v.replace(/\D/g, "").slice(0, 5));
+                    } else {
+                      setPostalCode(v.replace(/[^A-Za-z0-9\s\-]/g, "").slice(0, 16));
+                    }
+                  }}
                   autoComplete="shipping postal-code"
-                  inputMode="numeric"
-                  pattern="[0-9]{5}"
-                  maxLength={5}
+                  inputMode={countryCode === "DE" ? "numeric" : "text"}
+                  pattern={countryCode === "DE" ? "[0-9]{5}" : undefined}
+                  maxLength={countryCode === "DE" ? 5 : 16}
                   enterKeyHint="next"
                   required
                   aria-required="true"
                   className="mt-1.5 h-11 w-full rounded-lg border border-black/[0.12] bg-white px-3 text-[14px] text-foreground outline-none ring-tint focus:ring-2"
-                  placeholder="z. B. 85055"
+                  placeholder={countryCode === "DE" ? "z. B. 85055" : "z. B. 1010, SW1A 1AA"}
                 />
               </label>
               <label className="block">

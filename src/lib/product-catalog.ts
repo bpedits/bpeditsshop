@@ -12,6 +12,8 @@ type PriceRow = {
   pack: string;
   eur: number;
   category: string;
+  /** Optional: fester Shop-Slug (z. B. `/shop/bpc`), wenn `name` ein anderes slugify-Ergebnis hätte. */
+  slug?: string;
 };
 
 function rp(base: Omit<Product, "description"> & { description: string }): Product {
@@ -110,7 +112,9 @@ function buildProducts(rows: PriceRow[], usedSlugs: Set<string>): Product[] {
     const docs = documentationForCategory(category);
     const id = `fam-${String(++idx).padStart(3, "0")}`;
 
-    let slug = slugify(name);
+    const slugOverride =
+      typeof (first as PriceRow).slug === "string" ? (first as PriceRow).slug!.trim() : "";
+    let slug = slugOverride || slugify(name);
     if (usedSlugs.has(slug)) {
       slug = `${slugify(name)}-${slugify(category).slice(0, 24)}`;
     }

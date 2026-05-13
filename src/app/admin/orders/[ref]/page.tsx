@@ -56,13 +56,21 @@ export default async function AdminOrderDetail(props: { params: Promise<{ ref: s
         <Card title="Kontakt">
           <p className="text-foreground">{order.name}</p>
           {order.company ? <p className="text-muted">{order.company}</p> : null}
+          {order.taxNumber ? <p className="text-muted">Steuernummer: {order.taxNumber}</p> : null}
+          {order.hrb ? <p className="text-muted">HRB: {order.hrb}</p> : null}
           <p className="text-muted">{order.email}</p>
         </Card>
         <Card title="Lieferadresse">
           <p className="text-foreground">{order.shipping.streetLine1}</p>
           {order.shipping.streetLine2 ? <p className="text-muted">{order.shipping.streetLine2}</p> : null}
           <p className="text-muted">{order.shipping.postalCode} {order.shipping.city}</p>
-          <p className="text-muted">{order.shipping.bundeslandLabel} · Deutschland</p>
+          <p className="text-muted">
+            {order.shipping.countryCode === "DE"
+              ? `${order.shipping.bundeslandLabel} · ${order.shipping.countryLabel}`
+              : order.shipping.bundeslandLabel
+                ? `${order.shipping.bundeslandLabel} · ${order.shipping.countryLabel}`
+                : order.shipping.countryLabel}
+          </p>
         </Card>
         <Card title="Bank (Snapshot)">
           <p className="text-foreground">{order.bankSnapshot.accountHolder}</p>

@@ -79,13 +79,23 @@ export function buildCustomerOrderEmailHtml(order: StoredOrder, opts: BuildEmail
   `;
 
   const shippingHtml = formatShippingBlockHtml({
-    countryCode: "DE",
+    countryCode: order.shipping.countryCode,
+    countryLabel: order.shipping.countryLabel,
     bundeslandCode: order.shipping.bundeslandCode,
+    bundeslandLabel: order.shipping.bundeslandLabel,
     streetLine1: order.shipping.streetLine1,
     streetLine2: order.shipping.streetLine2 ?? "",
     postalCode: order.shipping.postalCode,
     city: order.shipping.city,
   });
+
+  const taxBlock =
+    order.taxNumber || order.hrb
+      ? `<p style="margin:14px 0 0;font-size:13px;line-height:1.55;color:#636366;">
+          ${order.taxNumber ? `<strong>Steuernummer:</strong> ${escapeHtml(order.taxNumber)}<br/>` : ""}
+          ${order.hrb ? `<strong>HRB:</strong> ${escapeHtml(order.hrb)}` : ""}
+        </p>`
+      : "";
 
   const resendBanner = opts.resendMarker
     ? `<p style="margin:0 0 14px;padding:10px 14px;background:#fffbea;border:1px solid #f1e4a4;border-radius:8px;font-size:13px;color:#5a4a00;">Hinweis: Diese E-Mail wurde Ihnen erneut zugesandt (Ursprung: ${escapeHtml(new Date(order.createdAtIso).toLocaleString("de-DE", { timeZone: "Europe/Berlin" }))}).</p>`
@@ -99,6 +109,7 @@ export function buildCustomerOrderEmailHtml(order: StoredOrder, opts: BuildEmail
     ${ctaButton}
     ${bankBlock}
     ${shippingHtml}
+    ${taxBlock}
     ${lineTableHtml(order.lines)}
     <p class="body-text" style="margin:18px 0 0;font-size:16px;"><strong>Summe (Referenz):</strong> ${escapeHtml(totalStr)}</p>
     ${order.promoCode ? `<p style="margin:10px 0 0;font-size:13px;color:#636366;">Vermerkter Rabattcode: <strong>${escapeHtml(order.promoCode)}</strong>. Wir berücksichtigen ihn bei der manuellen Prüfung, sofern er gültig ist.</p>` : ""}
@@ -118,8 +129,10 @@ export function buildTeamOrderEmailHtml(order: StoredOrder): string {
   const ibanDisplay = formatIbanGroups(order.bankSnapshot.iban);
 
   const shippingHtml = formatShippingBlockHtml({
-    countryCode: "DE",
+    countryCode: order.shipping.countryCode,
+    countryLabel: order.shipping.countryLabel,
     bundeslandCode: order.shipping.bundeslandCode,
+    bundeslandLabel: order.shipping.bundeslandLabel,
     streetLine1: order.shipping.streetLine1,
     streetLine2: order.shipping.streetLine2 ?? "",
     postalCode: order.shipping.postalCode,
@@ -143,6 +156,8 @@ export function buildTeamOrderEmailHtml(order: StoredOrder): string {
     <p style="margin:0 0 6px;"><strong>Bestellnummer:</strong> <span style="font-family:'SFMono-Regular',Consolas,Menlo,monospace;">${escapeHtml(order.orderRef)}</span></p>
     <p style="margin:0 0 6px;"><strong>Kunde:</strong> ${escapeHtml(order.name)} &lt;${escapeHtml(order.email)}&gt;</p>
     ${order.company ? `<p style="margin:0 0 6px;"><strong>Firma:</strong> ${escapeHtml(order.company)}</p>` : ""}
+    ${order.taxNumber ? `<p style="margin:0 0 6px;"><strong>Steuernummer:</strong> ${escapeHtml(order.taxNumber)}</p>` : ""}
+    ${order.hrb ? `<p style="margin:0 0 6px;"><strong>HRB:</strong> ${escapeHtml(order.hrb)}</p>` : ""}
     ${shippingHtml}
     <p style="margin:8px 0 0;"><strong>Summe (Referenz):</strong> ${escapeHtml(totalStr)}</p>
     ${order.promoCode ? `<p style="margin:6px 0 0;"><strong>Vermerk / Code:</strong> ${escapeHtml(order.promoCode)}</p>` : ""}

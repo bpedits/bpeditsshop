@@ -11,6 +11,10 @@ export function LegalDisclaimer() {
         day: "numeric",
       })}{" "}
       · {brand.name}. Soweit sich gesetzliche oder fachliche Rahmen ändern, passen wir diese Darstellung an.
+      <span className="mt-2 block text-[12px] text-muted">
+        <strong className="font-medium text-foreground">Hinweis:</strong> Die folgenden Texte ersetzen keine
+        individuelle Rechtsberatung. Im Zweifel lassen Sie Klauseln mit Ihrer Rechtsberatung abstimmen.
+      </span>
     </aside>
   );
 }
