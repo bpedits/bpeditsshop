@@ -12,7 +12,8 @@
     "admin:create-user": "node ./scripts/admin-create-user.mjs",
     "migrate:supabase": "node ./scripts/migrate-data-to-supabase.mjs",
     "catalog:export": "tsx ./scripts/export-catalog.ts",
-    "catalog:images": "tsx ./scripts/sync-product-images-manifest.ts"
+    "catalog:images": "tsx ./scripts/sync-product-images-manifest.ts",
+    "catalog:images:init-map": "tsx ./scripts/init-product-image-map.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.105.4",
