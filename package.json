@@ -4,14 +4,15 @@
   "private": true,
   "scripts": {
     "dev": "next dev -p 43000",
-    "build": "next build",
+    "build": "npm run catalog:images && next build",
     "start": "next start",
     "lint": "eslint",
     "test:bank-order": "node ./scripts/test-bank-order-local.mjs",
     "test:smtp": "node ./scripts/test-smtp.mjs",
     "admin:create-user": "node ./scripts/admin-create-user.mjs",
     "migrate:supabase": "node ./scripts/migrate-data-to-supabase.mjs",
-    "catalog:export": "tsx ./scripts/export-catalog.ts"
+    "catalog:export": "tsx ./scripts/export-catalog.ts",
+    "catalog:images": "tsx ./scripts/sync-product-images-manifest.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.105.4",

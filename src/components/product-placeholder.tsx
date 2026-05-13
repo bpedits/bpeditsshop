@@ -1,7 +1,7 @@
 import type { Product } from "@/lib/product-types";
 import {
   PRODUCT_CATALOG_IMAGE_HEIGHT,
-  PRODUCT_CATALOG_IMAGE_SRC,
+  getProductCatalogImageSrc,
   PRODUCT_CATALOG_IMAGE_WIDTH,
 } from "@/lib/product-catalog-image";
 
@@ -18,6 +18,7 @@ type Props = {
  */
 export function ProductPlaceholder({ product, className = "", variant = "card" }: Props) {
   const isHero = variant === "hero";
+  const src = getProductCatalogImageSrc(product.slug);
 
   return (
     <div
@@ -26,7 +27,7 @@ export function ProductPlaceholder({ product, className = "", variant = "card" }
       className={`relative aspect-square w-full overflow-hidden bg-surface-pearl ${className}`}
     >
       <img
-        src={PRODUCT_CATALOG_IMAGE_SRC}
+        src={src}
         alt=""
         width={PRODUCT_CATALOG_IMAGE_WIDTH}
         height={PRODUCT_CATALOG_IMAGE_HEIGHT}
